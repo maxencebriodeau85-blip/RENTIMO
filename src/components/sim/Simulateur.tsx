@@ -141,12 +141,6 @@ export function Simulateur() {
     if (num("loyer") !== undefined) surcharges.loyer_mensuel = num("loyer");
     if (num("apport") !== undefined) surcharges.apport = num("apport");
     if (num("surface") !== undefined) surcharges.surface = num("surface");
-    if (num("travaux") !== undefined) surcharges.travaux = num("travaux");
-    const regimeUrl = params.get("regime");
-    if (regimeUrl && regimeUrl in LIBELLES_REGIME) {
-      surcharges.regime_fiscal = regimeUrl as Regime;
-      if (regimeUrl.startsWith("nue")) surcharges.mobilier = 0;
-    }
     if (num("charges") !== undefined) {
       surcharges.charges_copro = num("charges");
       surcharges.taxe_fonciere = 0;

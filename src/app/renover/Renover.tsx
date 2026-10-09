@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { calculer, ENTREE_DEFAUT, fraisNotaireEstimes, type Regime, type TypeLocal } from "@/lib/calculs";
+import { calculer, ENTREE_DEFAUT, fraisNotaireEstimes, type Entree, type Regime, type TypeLocal } from "@/lib/calculs";
 import { euros, eurosSigne, loyerM2, m2, nombre, pct } from "@/lib/format";
 import { MARCHE, loyerMarche, parCodePostal, statPrix } from "@/lib/marche";
 import {
@@ -157,6 +157,7 @@ function Echelle({ dpe, cible, travaux }: { dpe: Classe; cible: Classe; travaux:
 
 export function Renover() {
   const params = useSearchParams();
+  const router = useRouter();
   const [s, setS] = useState<Saisie>(EXEMPLE);
   const [annonce, setAnnonce] = useState("");
   const [lu, setLu] = useState<{ trouve: AnnonceLue; vide: boolean } | null>(null);
@@ -219,11 +220,10 @@ export function Renover() {
   const superDeficit = s.regime === "nue_reel" && eligibleSuperDeficit(s.dpe, s.cible) && travaux > 0;
   const mobilier = s.regime === "lmnp_reel" ? (s.type === "Maison" ? 7000 : 4500) : 0;
 
-  const r = useMemo(
-    () =>
-      calculer({
+  const entree = useMemo<Entree>(
+    () => ({
         ...ENTREE_DEFAUT,
-        nom: "Bien à rénover",
+        nom: `${s.type} à rénover${commune ? `, ${commune}` : ""}`,
         type_local: s.type,
         prix_achat: s.prix,
         frais_notaire: 0,
@@ -245,6 +245,7 @@ export function Renover() {
       }),
     [s, travaux, mobilier, commune, loyer, charges, superDeficit],
   );
+  const r = useMemo(() => calculer(entree), [entree]);
 
   const notaire = fraisNotaireEstimes(s.prix, "ancien");
   const coutRevient = s.prix + notaire + travaux + s.autres;
@@ -281,7 +282,17 @@ export function Renover() {
 
   const banni = interdiction(s.dpe);
   const cibleBannie = interdiction(s.cible);
-  const lienSimu = `/simulateur?type=${encodeURIComponent(s.type)}&prix=${s.prix}&loyer=${loyer}&surface=${s.surface}&cp=${s.cp}&apport=${s.apport}&charges=${charges}&travaux=${travaux + s.autres}&regime=${s.regime}`;
+  const lienSimu = `/simulateur?type=${encodeURIComponent(s.type)}&prix=${s.prix}&loyer=${loyer}&surface=${s.surface}&cp=${s.cp}&apport=${s.apport}&charges=${charges}`;
+
+  // Le simulateur reprend le brouillon local : travaux, régime et plafond de déficit compris.
+  function ouvrirSimulateur(ev: React.MouseEvent) {
+    try {
+      localStorage.setItem("rentimo:brouillon", JSON.stringify(entree));
+    } catch {
+      ev.preventDefault();
+      router.push(lienSimu);
+    }
+  }
 
   return (
     <div className="simulateur conteneur ren">
@@ -488,7 +499,7 @@ export function Renover() {
                 <div className="tuile-valeur">{pct(r.tri_pct)}</div>
               </div>
             </div>
-            <Link href={lienSimu} className="btn btn-clair">
+            <Link href="/simulateur" onClick={ouvrirSimulateur} className="btn btn-clair">
               Ouvrir dans le simulateur complet <span className="fleche" aria-hidden="true">→</span>
             </Link>
           </div>
