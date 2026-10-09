@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { calculer, ENTREE_DEFAUT, LIBELLES_REGIME, type Regime, type TypeLocal } from "@/lib/calculs";
-import { euros, eurosSigne, pct } from "@/lib/format";
+import { euros } from "@/lib/format";
 import { LigneNombre } from "@/components/ChampNombre";
 import { Sparkline } from "@/components/Courbe";
+import { Compteur } from "./Compteur";
 
 const PRESETS: Record<TypeLocal, { prix: number; loyer: number; charges: number; apport: number; surface: number }> = {
   Appartement: { prix: 105000, loyer: 520, charges: 1490, apport: 15000, surface: 42 },
@@ -19,11 +20,17 @@ const COURTS: Record<Regime, string> = {
   nue_micro: "Nue micro",
   nue_reel: "Nue réel",
 };
+const CADENCE = 2800;
+
+const image = (nom: string) => ({ ["--image" as string]: `url(/visuels/scene-${nom}.svg)` });
 
 export function Demonstration() {
   const [type, setType] = useState<TypeLocal>("Appartement");
   const [v, setV] = useState(PRESETS.Appartement);
   const [regime, setRegime] = useState<Regime>("lmnp_reel");
+  const [auto, setAuto] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const panneauFisc = useRef<HTMLDivElement>(null);
 
   const r = useMemo(
     () =>
@@ -44,7 +51,27 @@ export function Demonstration() {
     [type, v],
   );
 
+  // Les onglets fiscaux défilent seuls tant que le panneau est à l'écran et que personne n'y touche.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAuto(false);
+      return;
+    }
+    const el = panneauFisc.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.6 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!auto || !visible) return;
+    const t = setTimeout(() => setRegime((g) => REGIMES[(REGIMES.indexOf(g) + 1) % REGIMES.length]), CADENCE);
+    return () => clearTimeout(t);
+  }, [auto, visible, regime]);
+
   const fisc = r.regimes.find((x) => x.regime === regime)!;
+  const meilleur = r.regimes.find((x) => x.regime === r.meilleur_regime);
   const lien = `/simulateur?type=${encodeURIComponent(type)}&prix=${v.prix}&loyer=${v.loyer}&charges=${v.charges}&apport=${v.apport}&surface=${v.surface}`;
   const patrimoine = r.projection.map((p) => p.patrimoine_net + p.cashflow_cumule);
 
@@ -58,8 +85,8 @@ export function Demonstration() {
             Modifiez un chiffre, tout se met à jour.
           </p>
         </div>
-        <div className="bande-scene" style={{ ["--cadrage" as string]: "38%" }}>
-          <div className="scene-fond" aria-hidden="true" />
+        <div className="bande-scene">
+          <div className="scene-fond" style={image("buffet")} aria-hidden="true" />
           <div className="verre panneau panneau-sim">
             <div className="panneau-tete">
               <h3>Simulation</h3>
@@ -102,32 +129,32 @@ export function Demonstration() {
             revendez dans vingt ans.
           </p>
         </div>
-        <div className="bande-scene" style={{ ["--cadrage" as string]: "58%" }}>
-          <div className="scene-fond" aria-hidden="true" />
-          <div className="verre panneau panneau-kpi" aria-live="polite">
+        <div className="bande-scene">
+          <div className="scene-fond" style={image("fauteuil")} aria-hidden="true" />
+          <div className="verre panneau panneau-kpi">
             <div className="tuile">
               <div className="tuile-label">Rendement brut</div>
-              <div className="tuile-valeur">{pct(r.rendement_brut_pct)}</div>
+              <div className="tuile-valeur"><Compteur valeur={r.rendement_brut_pct} format="pct" /></div>
             </div>
             <div className="tuile">
               <div className="tuile-label">Rendement net</div>
-              <div className="tuile-valeur">{pct(r.rendement_net_pct)}</div>
+              <div className="tuile-valeur"><Compteur valeur={r.rendement_net_pct} format="pct" /></div>
             </div>
             <div className="tuile">
               <div className="tuile-label">Net-net après impôt</div>
-              <div className={`tuile-valeur ${r.rendement_net_net_pct >= 0 ? "positif" : "negatif"}`}>{pct(r.rendement_net_net_pct)}</div>
+              <div className={`tuile-valeur ${r.rendement_net_net_pct >= 0 ? "positif" : "negatif"}`}><Compteur valeur={r.rendement_net_net_pct} format="pct" /></div>
             </div>
             <div className="tuile">
               <div className="tuile-label">Cash-flow mensuel</div>
-              <div className={`tuile-valeur ${r.cashflow_mensuel >= 0 ? "positif" : "negatif"}`}>{eurosSigne(r.cashflow_mensuel)}</div>
+              <div className={`tuile-valeur ${r.cashflow_mensuel >= 0 ? "positif" : "negatif"}`}><Compteur valeur={r.cashflow_mensuel} format="eurosSigne" /></div>
             </div>
             <div className="tuile">
               <div className="tuile-label">TRI avec revente</div>
-              <div className="tuile-valeur">{pct(r.tri_pct)}</div>
+              <div className="tuile-valeur"><Compteur valeur={r.tri_pct} format="pct" /></div>
             </div>
             <div className="tuile tuile-courbe">
               <div className="tuile-label">Enrichissement net sur 20 ans</div>
-              <div className="tuile-valeur">{euros(r.enrichissement_total)}</div>
+              <div className="tuile-valeur"><Compteur valeur={r.enrichissement_total} format="euros" duree={1600} /></div>
               <Sparkline valeurs={patrimoine} largeur={200} hauteur={40} />
             </div>
           </div>
@@ -142,12 +169,28 @@ export function Demonstration() {
             moins sur dix ans.
           </p>
         </div>
-        <div className="bande-scene" style={{ ["--cadrage" as string]: "74%" }}>
-          <div className="scene-fond" aria-hidden="true" />
-          <div className="verre panneau panneau-fisc">
+        <div className="bande-scene">
+          <div className="scene-fond" style={image("bureau")} aria-hidden="true" />
+          <div
+            ref={panneauFisc}
+            className={`verre panneau panneau-fisc${auto && visible ? " auto" : ""}`}
+            style={{ ["--cadence" as string]: `${CADENCE}ms` }}
+            onPointerDown={() => setAuto(false)}
+            onFocus={() => setAuto(false)}
+          >
             <div className="pilules" role="tablist" aria-label="Régime fiscal">
               {REGIMES.map((g) => (
-                <button key={g} type="button" role="tab" className="pilule" aria-selected={regime === g} onClick={() => setRegime(g)}>
+                <button
+                  key={g}
+                  type="button"
+                  role="tab"
+                  className="pilule"
+                  aria-selected={regime === g}
+                  onClick={() => {
+                    setAuto(false);
+                    setRegime(g);
+                  }}
+                >
                   {COURTS[g]}
                 </button>
               ))}
@@ -155,15 +198,15 @@ export function Demonstration() {
             <div className="fisc-grille" role="tabpanel" aria-label={LIBELLES_REGIME[regime]}>
               <div>
                 <div className="tuile-label">Loyers encaissés, an 1</div>
-                <div className="tuile-valeur">{euros(r.loyer_annuel_effectif)}</div>
+                <div className="tuile-valeur"><Compteur valeur={r.loyer_annuel_effectif} format="euros" /></div>
               </div>
               <div>
                 <div className="tuile-label">Impôt moyen par an (10 ans)</div>
-                <div className="tuile-valeur">{fisc.eligible ? euros(fisc.impot_moyen_10ans) : "—"}</div>
+                <div className="tuile-valeur"><Compteur valeur={fisc.eligible ? fisc.impot_moyen_10ans : null} format="euros" /></div>
               </div>
               <div>
                 <div className="tuile-label">TRI avec revente</div>
-                <div className={`tuile-valeur ${fisc.tri_pct !== null && fisc.tri_pct > 0 ? "positif" : ""}`}>{pct(fisc.tri_pct)}</div>
+                <div className={`tuile-valeur ${fisc.tri_pct !== null && fisc.tri_pct > 0 ? "positif" : ""}`}><Compteur valeur={fisc.tri_pct} format="pct" /></div>
               </div>
             </div>
             <p className="fisc-verdict">
@@ -171,7 +214,7 @@ export function Demonstration() {
                 ? fisc.raison
                 : regime === r.meilleur_regime
                   ? "Le régime le plus avantageux pour ce bien."
-                  : `${COURTS[r.meilleur_regime]} coûte ${euros(fisc.impot_moyen_10ans - (r.regimes.find((x) => x.regime === r.meilleur_regime)?.impot_moyen_10ans ?? 0))} de moins par an.`}
+                  : `${COURTS[r.meilleur_regime]} coûte ${euros(fisc.impot_moyen_10ans - (meilleur?.impot_moyen_10ans ?? 0))} de moins par an.`}
             </p>
           </div>
         </div>

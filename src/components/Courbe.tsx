@@ -11,8 +11,8 @@ export function Sparkline({ valeurs, largeur = 160, hauteur = 48, couleur = "var
   const aire = `0,${hauteur} ${pts.join(" ")} ${largeur},${hauteur}`;
   return (
     <svg width={largeur} height={hauteur} viewBox={`0 0 ${largeur} ${hauteur}`} aria-hidden="true" style={{ overflow: "visible" }}>
-      <polygon points={aire} fill={couleur} opacity="0.08" />
-      <polyline points={pts.join(" ")} fill="none" stroke={couleur} strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
+      <polygon className="trace-aire" points={aire} fill={couleur} opacity="0.08" />
+      <path className="trace" pathLength={1} d={`M${pts.join(" L")}`} fill="none" stroke={couleur} strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   );
 }

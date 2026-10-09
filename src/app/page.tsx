@@ -3,6 +3,7 @@ import "./accueil.css";
 import { Focus } from "@/components/accueil/Focus";
 import { Demonstration } from "@/components/accueil/Demonstration";
 import { CarteVendee } from "@/components/accueil/CarteVendee";
+import { Compteur } from "@/components/accueil/Compteur";
 import { MARCHE } from "@/lib/marche";
 import { exempleSecteur } from "@/lib/exemples";
 import { euros, eurosSigne, m2, nombre, pct } from "@/lib/format";
@@ -45,12 +46,17 @@ export default function Accueil() {
     <div className="accueil" data-descente>
       <Focus />
 
-      <section className="hero">
-        <div className="hero-visuel" aria-hidden="true">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/visuels/tour-nuit.svg" alt="" />
-        </div>
-        <div className="conteneur hero-int">
+      <section className="plongee" data-plongee>
+        <div className="plongee-cadre">
+          <div className="plongee-tour" data-tour aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/visuels/tour-nuit.svg" alt="" />
+          </div>
+          <div className="plongee-voile" aria-hidden="true" />
+          <div className="plongee-lueur" aria-hidden="true" />
+          <div className="plongee-interieur" aria-hidden="true" />
+          <div className="plongee-indice" aria-hidden="true" />
+        <div className="conteneur hero-int plongee-texte">
           <h1 className="titre-xl">
             Investissement locatif,
             <br />
@@ -80,6 +86,7 @@ export default function Accueil() {
             </li>
           </ul>
         </div>
+        </div>
       </section>
 
       <div className="conteneur bandes">
@@ -95,12 +102,13 @@ export default function Accueil() {
             </p>
           </div>
           <div className="bande-scene scene-cartes">
+            <div className="scene-fond" style={{ ["--image" as string]: "url(/visuels/scene-baie.svg)" }} aria-hidden="true" />
             <div className="cartes-biens">
-              {exemples.map(({ cp, nom, vignette, ex }) => (
-                <article key={cp} className="carte-bien">
+              {exemples.map(({ cp, nom, vignette, ex }, i) => (
+                <article key={cp} className="carte-bien" style={{ ["--i" as string]: i }}>
                   <div className="carte-image" style={{ backgroundImage: `url(/visuels/vignette-${vignette}.svg)` }}>
                     <span className="carte-score">
-                      <span className="chiffre">{ex!.score.total}</span>
+                      <Compteur valeur={ex!.score.total} />
                       <span className="discret">/100</span>
                     </span>
                   </div>
@@ -140,9 +148,12 @@ export default function Accueil() {
             </Link>
           </div>
           <div className="bande-scene scene-carte">
+            <div className="scene-fond" aria-hidden="true" />
             <CarteVendee />
             <div className="verre panneau panneau-donnees">
-              <div className="tuile-valeur positif chiffre">{nombre(MARCHE.total_ventes)} ventes réelles</div>
+              <div className="tuile-valeur positif">
+                <Compteur valeur={MARCHE.total_ventes} duree={1800} /> ventes réelles
+              </div>
               <p className="petit" style={{ margin: "4px 0 0" }}>en Vendée, {MARCHE.periode} (DVF)</p>
               <span className="badge" style={{ marginTop: 12 }}>
                 Données publiques de l'État
@@ -159,8 +170,8 @@ export default function Accueil() {
               en lecture seule. Votre interlocuteur voit exactement ce que vous voyez.
             </p>
           </div>
-          <div className="bande-scene scene-rapport" style={{ ["--cadrage" as string]: "88%" }}>
-            <div className="scene-fond" aria-hidden="true" />
+          <div className="bande-scene scene-rapport">
+            <div className="scene-fond" style={{ ["--image" as string]: "url(/visuels/scene-table.svg)" }} aria-hidden="true" />
             <div className="pile" aria-hidden="true">
               <div className="feuille f3" />
               <div className="feuille f2" />
@@ -176,7 +187,7 @@ export default function Accueil() {
                   <div><span>TRI 20 ans</span><b>{pct(sables?.r.tri_pct)}</b></div>
                 </div>
                 <svg viewBox="0 0 200 60" className="feuille-courbe">
-                  <polyline points="0,52 20,50 40,47 60,43 80,39 100,34 120,28 140,22 160,16 180,10 200,4" fill="none" stroke="#2f7d5f" strokeWidth="1.6" />
+                  <path className="trace" pathLength={1} d="M0,52 L20,50 L40,47 L60,43 L80,39 L100,34 L120,28 L140,22 L160,16 L180,10 L200,4" fill="none" stroke="#2f7d5f" strokeWidth="1.6" />
                   <polyline points="0,40 20,41 40,42 60,43 80,44 100,44 120,45 140,45 160,46 180,46 200,46" fill="none" stroke="#b0b8c2" strokeWidth="1.2" strokeDasharray="4 3" />
                 </svg>
                 <div className="feuille-lignes">

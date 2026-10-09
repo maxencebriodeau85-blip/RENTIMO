@@ -1,48 +1,152 @@
-/* ---------- Accueil : la descente le long de l'immeuble ---------- */
+/* ---------- Accueil : la descente dans l'immeuble ----------
+   Variables posées par Focus.tsx :
+   --q, --e  sur .plongee      progression de la plongée (brute, adoucie), de 0 à 1
+   --p       sur chaque bande  position par rapport au centre de l'écran, de -1 (au-dessus) à 1 (en dessous)
+   --focus   sur chaque bande  1 au centre de l'écran, 0 hors champ
+   .anim     sur .accueil      présent seulement avec JavaScript et sans mouvement réduit
+   .vu       sur chaque bande  posé une fois, quand la bande arrive au centre */
 
-.hero {
+/* Vignettage : seul le centre de l'écran est éclairé, comme une caméra qui descend. */
+.accueil.anim::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  background: radial-gradient(125% 95% at 50% 52%, rgba(4, 7, 12, 0) 50%, rgba(4, 7, 12, 0.5) 80%, rgba(4, 7, 12, 0.82) 100%);
+}
+
+/* ---------- Plongée ---------- */
+.plongee {
   position: relative;
-  min-height: calc(100svh - 64px);
-  display: grid;
+}
+
+.anim .plongee {
+  height: 240vh;
+}
+
+.plongee-cadre {
+  position: relative;
+  height: calc(100svh - 64px);
+  min-height: 560px;
   overflow: hidden;
   isolation: isolate;
+  display: grid;
 }
 
-.hero-visuel {
+.anim .plongee-cadre {
+  position: sticky;
+  top: 64px;
+}
+
+.plongee-tour {
+  /* Fenêtre visée, en fractions de tour-nuit.svg (voir scripts/gen-visuels.mjs). */
+  --ox: 0.5475;
+  --oy: 0.55;
   position: absolute;
-  inset: 0 0 0 auto;
-  width: min(62%, 980px);
-  z-index: -1;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%), linear-gradient(to bottom, #000 78%, transparent);
-  mask-image: linear-gradient(to right, transparent 0%, #000 34%);
+  z-index: -4;
+  top: -12vh;
+  right: max(2vw, calc((100vw - 1240px) / 2));
+  height: 132vh;
+  aspect-ratio: 800 / 1400;
+  transform-origin: calc(var(--ox) * 100%) calc(var(--oy) * 100%);
+  transform: translate3d(calc(var(--dx, 0px) * min(1, var(--e, 0) * 1.6)), calc(var(--dy, 0px) * min(1, var(--e, 0) * 1.6)), 0)
+    scale(calc(1 + var(--e, 0) * var(--e, 0) * 24));
+  will-change: transform;
 }
 
-.hero-visuel img {
+.plongee-tour img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 62% 8%;
 }
 
-.hero::after {
-  content: "";
+.plongee-voile {
   position: absolute;
-  inset: auto 0 0 0;
-  height: 180px;
-  background: linear-gradient(to bottom, transparent, var(--nuit));
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--nuit) 0%, var(--nuit) 26%, rgba(10, 16, 25, 0.55) 46%, rgba(10, 16, 25, 0) 64%),
+    linear-gradient(0deg, var(--nuit) 0%, rgba(10, 16, 25, 0) 26%);
+  opacity: clamp(0, calc(1 - var(--e, 0) * 1.6), 1);
+}
+
+.plongee-lueur {
+  position: absolute;
+  inset: -20%;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, #fff1d6 0%, #f3b36a 18%, rgba(201, 122, 54, 0.55) 38%, rgba(10, 16, 25, 0) 66%);
+  opacity: min(clamp(0, calc((var(--e, 0) - 0.42) / 0.26), 1), clamp(0, calc((1 - var(--e, 0)) / 0.24), 1));
+  transform: scale(calc(0.4 + var(--e, 0) * 1.4));
+}
+
+.plongee-interieur {
+  position: absolute;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
+  background: url(/visuels/scene-salon.svg) 50% 60% / cover no-repeat, var(--nuit);
+  opacity: clamp(0, calc((var(--e, 0) - 0.66) / 0.26), 1);
+  transform: scale(calc(1.32 - 0.32 * clamp(0, calc((var(--e, 0) - 0.66) / 0.34), 1)));
+}
+
+.plongee-interieur::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 16, 25, 0) 70%, var(--nuit) 100%);
+}
+
+.plongee-indice {
+  display: none;
+}
+
+.anim .plongee-indice {
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(180deg, rgba(236, 239, 243, 0), rgba(236, 239, 243, 0.7));
+  opacity: clamp(0, calc(0.8 - var(--q, 0) * 6), 0.8);
+  animation: indice 2.6s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+
+@keyframes indice {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  48% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  52% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
 }
 
 .hero-int {
   display: grid;
   align-content: center;
   gap: 26px;
-  padding-top: 72px;
+  padding-top: 48px;
   padding-bottom: 96px;
 }
 
-.hero h1 {
+.anim .plongee-texte {
+  opacity: clamp(0, calc(1 - var(--q, 0) * 3.4), 1);
+  transform: translate3d(0, calc(var(--q, 0) * -140px), 0);
+}
+
+.plongee h1 {
   font-size: clamp(40px, 4.5vw, 66px);
 }
 
@@ -74,25 +178,27 @@
   font-weight: 500;
 }
 
-/* ---------- Bandes ---------- */
+/* ---------- Bandes : une colonne de scènes continue ---------- */
 .bandes {
   display: grid;
 }
 
 .bande {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: clamp(28px, 4vw, 64px);
   align-items: center;
-  padding: 64px 0;
-  opacity: calc(0.3 + 0.7 * var(--focus, 1));
-  transition: opacity 0.25s linear;
+  min-height: 600px;
 }
 
 .bande-texte {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 2;
   display: grid;
   gap: 18px;
   align-content: center;
+  padding: 64px 40px 64px 0;
 }
 
 .bande-texte .btn {
@@ -100,31 +206,69 @@
 }
 
 .bande-scene {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-self: stretch;
   position: relative;
-  min-height: 460px;
-  border-radius: 26px;
   overflow: hidden;
   isolation: isolate;
   display: grid;
   place-items: center;
-  padding: 40px;
-  border: 1px solid var(--trait);
-  background: var(--nuit-2);
+  min-height: 600px;
+  padding: 56px 0 56px 41.67%;
+  margin-right: calc(-1 * var(--gouttiere));
+  box-shadow: inset 0 1px 0 rgba(236, 239, 243, 0.05);
 }
 
 .scene-fond {
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: url(/visuels/tour-nuit-statique.svg) 50% var(--cadrage, 40%) / 150% auto no-repeat, #0b121c;
-  filter: brightness(calc(0.55 + 0.25 * var(--focus, 1))) saturate(1.05);
+  inset: -70px 0;
+  z-index: -3;
+  background: var(--image, none) 62% 50% / cover no-repeat, #0b121c;
+  transform: translate3d(0, calc(var(--p, 0) * 70px), 0) scale(1.04);
+  will-change: transform;
 }
 
-.scene-fond::after {
+/* Fondu vers la nuit sous le texte et sur le bord droit. */
+.bande-scene::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(120% 90% at 70% 50%, transparent 30%, rgba(7, 11, 18, 0.75) 100%);
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--nuit) 0%, rgba(10, 16, 25, 0.9) 20%, rgba(10, 16, 25, 0.38) 38%, rgba(10, 16, 25, 0) 52%, rgba(10, 16, 25, 0) 88%, rgba(10, 16, 25, 0.7) 100%),
+    linear-gradient(180deg, rgba(10, 16, 25, 0.45) 0%, rgba(10, 16, 25, 0) 16%, rgba(10, 16, 25, 0) 84%, rgba(10, 16, 25, 0.45) 100%);
+}
+
+/* La scène s'éteint quand elle quitte le centre. */
+.bande-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: #04070b;
+  opacity: calc(0.8 - 0.8 * var(--focus, 1));
+}
+
+.anim .bande-texte {
+  opacity: calc(0.16 + 0.84 * var(--focus, 1));
+  transform: translate3d(0, calc(var(--p, 0) * 30px), 0);
+}
+
+/* Panneaux de verre : légère bascule en perspective qui se redresse au centre. */
+.anim .bande-scene > .panneau:not(.panneau-donnees),
+.anim .cartes-biens,
+.anim .scene-rapport .pile {
+  transform: perspective(1600px) rotateX(calc(var(--p, 0) * 10deg)) translate3d(0, calc(var(--p, 0) * 40px), 0)
+    scale(calc(0.94 + 0.06 * var(--focus, 1)));
+  opacity: calc(0.28 + 0.72 * var(--focus, 1));
+}
+
+.bande .verre {
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
 }
 
 .panneau {
@@ -184,16 +328,98 @@
   margin: 16px 2px 0;
   font-size: 14px;
   color: var(--texte-2);
+  min-height: 1.6em;
 }
 
-/* Cartes de biens */
+/* Onglets fiscaux qui défilent seuls : une jauge indique le passage au suivant. */
+.panneau-fisc .pilule {
+  position: relative;
+}
+
+.panneau-fisc.auto .pilule[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 3px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--lueur);
+  transform-origin: left;
+  animation: jauge var(--cadence, 2.8s) linear forwards;
+}
+
+@keyframes jauge {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Apparitions à l'arrivée au centre (.vu) ---------- */
+:where(.bande) .ligne-champ,
+:where(.bande) .panneau-kpi .tuile,
+:where(.bande) .carte-bien,
+:where(.bande) .carte .point,
+:where(.bande) .carte .etiquette {
+  transition:
+    opacity 0.7s ease,
+    transform 0.9s cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.anim .bande:not(.vu) .panneau-sim .ligne-champ {
+  opacity: 0;
+  transform: translate3d(18px, 0, 0);
+}
+
+.panneau-sim .ligne-champ:nth-of-type(2) { transition-delay: 0.08s; }
+.panneau-sim .ligne-champ:nth-of-type(3) { transition-delay: 0.16s; }
+.panneau-sim .ligne-champ:nth-of-type(4) { transition-delay: 0.24s; }
+.panneau-sim .ligne-champ:nth-of-type(5) { transition-delay: 0.32s; }
+
+.anim .bande:not(.vu) .panneau-kpi .tuile {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+}
+
+.panneau-kpi .tuile:nth-child(2) { transition-delay: 0.08s; }
+.panneau-kpi .tuile:nth-child(3) { transition-delay: 0.16s; }
+.panneau-kpi .tuile:nth-child(4) { transition-delay: 0.24s; }
+.panneau-kpi .tuile:nth-child(5) { transition-delay: 0.32s; }
+.panneau-kpi .tuile:nth-child(6) { transition-delay: 0.4s; }
+
+/* Courbes qui se tracent */
+.trace {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.bande .trace {
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.45, 0, 0.2, 1) 0.5s;
+}
+
+.anim .bande:not(.vu) .trace {
+  stroke-dashoffset: 1;
+}
+
+.bande .trace-aire {
+  transition: opacity 1s ease 1.6s;
+}
+
+.anim .bande:not(.vu) .trace-aire {
+  opacity: 0;
+}
+
+/* ---------- Cartes de biens ---------- */
 .scene-cartes {
-  background: radial-gradient(90% 80% at 60% 40%, #142033, #0a1019);
-  padding: 28px;
+  padding-left: 38%;
 }
 
 .cartes-biens {
   width: 100%;
+  max-width: 760px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
@@ -204,7 +430,13 @@
   color: #0e1520;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.85);
+  transition-delay: calc(var(--i, 0) * 0.14s);
+}
+
+.anim .bande:not(.vu) .carte-bien {
+  opacity: 0;
+  transform: translate3d(70px, 30px, 0) rotate(2deg);
 }
 
 .carte-image {
@@ -280,22 +512,60 @@
   color: #b44a36;
 }
 
-/* Carte de Vendée */
+/* ---------- Carte de Vendée ---------- */
+.scene-carte .scene-fond {
+  background:
+    radial-gradient(60% 70% at 66% 50%, rgba(76, 195, 148, 0.09), rgba(76, 195, 148, 0) 70%),
+    repeating-linear-gradient(0deg, rgba(76, 195, 148, 0.035) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(90deg, rgba(76, 195, 148, 0.035) 0 1px, transparent 1px 44px),
+    radial-gradient(80% 70% at 60% 45%, #0f1c24, #070c13);
+}
+
 .scene-carte {
-  background: radial-gradient(80% 70% at 60% 45%, #0f1c24, #070c13);
-  padding: 24px;
+  padding-left: 34%;
 }
 
 .carte {
   width: 100%;
   height: auto;
-  max-height: 420px;
+  max-height: 440px;
+}
+
+.carte .contour {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 2.4s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.anim .bande:not(.vu) .carte .contour {
+  stroke-dashoffset: 1;
+}
+
+.carte .point {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition-duration: 0.5s, 0.7s;
+  transition-timing-function: ease, cubic-bezier(0.3, 1.7, 0.5, 1);
+  transition-delay: calc(0.7s + var(--d, 0) * 1.6s);
+}
+
+.anim .bande:not(.vu) .carte .point {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.carte .etiquette {
+  transition-delay: 2.4s;
+}
+
+.anim .bande:not(.vu) .carte .etiquette {
+  opacity: 0;
 }
 
 .panneau-donnees {
   position: absolute;
-  left: 22px;
-  bottom: 22px;
+  left: 30%;
+  bottom: 44px;
   padding: 16px 20px;
   border-radius: 16px;
 }
@@ -305,7 +575,7 @@
   margin: 0;
 }
 
-/* Pile de rapports */
+/* ---------- Pile de rapports : elle s'ouvre en éventail au centre ---------- */
 .scene-rapport .pile {
   position: relative;
   width: 300px;
@@ -323,17 +593,17 @@
 }
 
 .f3 {
-  transform: rotate(-9deg) translate(-38px, 18px);
   background: #d9dde3;
+  transform: rotate(calc(-9deg * var(--focus, 1))) translate(calc(-38px * var(--focus, 1)), calc(18px * var(--focus, 1)));
 }
 
 .f2 {
-  transform: rotate(-4deg) translate(-18px, 8px);
   background: #e7eaee;
+  transform: rotate(calc(-4deg * var(--focus, 1))) translate(calc(-18px * var(--focus, 1)), calc(8px * var(--focus, 1)));
 }
 
 .f1 {
-  transform: rotate(2.5deg);
+  transform: rotate(calc(2.5deg * var(--focus, 1))) translateY(calc((1 - var(--focus, 1)) * 26px));
   padding: 20px 20px;
   color: #0e1520;
   display: grid;
@@ -406,9 +676,6 @@
 /* ---------- Bandeau pro ---------- */
 .pro-bandeau {
   margin-top: 96px;
-}
-
-.pro-bandeau {
   display: grid;
   grid-template-columns: 1.35fr 1fr 0.85fr;
   gap: 40px;
@@ -521,16 +788,41 @@
   font-size: clamp(40px, 5vw, 68px);
 }
 
-/* ---------- Mobile ---------- */
+/* ---------- Mobile : pas de plongée fixe, scènes sous le texte ---------- */
 @media (max-width: 900px) {
-  .hero-visuel {
-    width: 100%;
-    opacity: 0.32;
-    -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
-    mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  .accueil.anim::after {
+    background: radial-gradient(140% 90% at 50% 50%, rgba(4, 7, 12, 0) 60%, rgba(4, 7, 12, 0.6) 100%);
   }
-  .hero-visuel img {
-    object-position: 70% 0%;
+  .anim .plongee {
+    height: auto;
+  }
+  .anim .plongee-cadre {
+    position: relative;
+    top: 0;
+  }
+  .plongee-cadre {
+    height: auto;
+    min-height: calc(100svh - 64px);
+  }
+  .plongee-tour {
+    right: 50%;
+    top: -6vh;
+    height: 110vh;
+    opacity: 0.34;
+    transform: translateX(50%);
+  }
+  .plongee-voile {
+    opacity: 1;
+    background: linear-gradient(0deg, var(--nuit) 0%, rgba(10, 16, 25, 0) 40%);
+  }
+  .plongee-lueur,
+  .plongee-interieur,
+  .anim .plongee-indice {
+    display: none;
+  }
+  .anim .plongee-texte {
+    opacity: 1;
+    transform: none;
   }
   .hero-int {
     padding-top: 48px;
@@ -538,13 +830,34 @@
   }
   .bande {
     grid-template-columns: 1fr;
-    padding: 44px 0;
-    opacity: 1;
+    min-height: 0;
+  }
+  .bande-texte {
+    padding: 44px 0 20px;
   }
   .bande-scene {
+    grid-column: 1;
+    grid-row: 2;
     min-height: 0;
-    padding: 18px;
-    border-radius: 20px;
+    padding: 28px 16px;
+    margin: 0 calc(-1 * var(--gouttiere));
+  }
+  .bande-scene::after {
+    background: linear-gradient(180deg, var(--nuit) 0%, rgba(10, 16, 25, 0) 14%, rgba(10, 16, 25, 0) 86%, var(--nuit) 100%);
+  }
+  .anim .bande-texte {
+    opacity: 1;
+    transform: none;
+  }
+  .anim .bande-scene > .panneau:not(.panneau-donnees),
+  .anim .cartes-biens,
+  .anim .scene-rapport .pile {
+    transform: translate3d(0, calc(var(--p, 0) * 18px), 0);
+    opacity: 1;
+  }
+  .scene-cartes,
+  .scene-carte {
+    padding: 28px 16px;
   }
   .panneau-kpi {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -24,6 +24,11 @@ const ETIQUETTES = ["85000", "85100", "85160", "85200", "85500", "85300"];
 
 export function CarteVendee() {
   const max = Math.max(...MARCHE.codes_postaux.map((c) => c.n));
+  // Les points s'allument de la côte vers l'intérieur des terres.
+  const lons = MARCHE.codes_postaux.map((c) => c.lon);
+  const ouest = Math.min(...lons);
+  const est = Math.max(...lons);
+  const delai = (lon: number) => ((lon - ouest) / (est - ouest || 1)).toFixed(3);
   return (
     <svg viewBox="0 0 560 372" className="carte" role="img" aria-label={`Carte des ${nombre(MARCHE.total_ventes)} ventes DVF par code postal en Vendée`}>
       <defs>
@@ -36,18 +41,29 @@ export function CarteVendee() {
           <feGaussianBlur stdDeviation="3" />
         </filter>
       </defs>
-      <path d={chemin(CONTOUR)} fill="rgba(76,195,148,0.035)" stroke="rgba(76,195,148,0.55)" strokeWidth="1.2" />
-      <path d={chemin(CONTOUR)} fill="none" stroke="rgba(76,195,148,0.35)" strokeWidth="5" filter="url(#lueur-carte)" />
-      <path d={chemin(NOIRMOUTIER)} fill="rgba(76,195,148,0.035)" stroke="rgba(76,195,148,0.55)" strokeWidth="1.2" />
-      <ellipse cx={px(-2.35)} cy={py(46.72)} rx="12" ry="5" fill="rgba(76,195,148,0.035)" stroke="rgba(76,195,148,0.55)" strokeWidth="1.2" />
+      <path className="contour" pathLength={1} d={chemin(CONTOUR)} fill="rgba(76,195,148,0.035)" stroke="rgba(76,195,148,0.55)" strokeWidth="1.2" />
+      <path className="contour" pathLength={1} d={chemin(CONTOUR)} fill="none" stroke="rgba(76,195,148,0.35)" strokeWidth="5" filter="url(#lueur-carte)" />
+      <path className="contour" pathLength={1} d={chemin(NOIRMOUTIER)} fill="rgba(76,195,148,0.035)" stroke="rgba(76,195,148,0.55)" strokeWidth="1.2" />
+      <ellipse className="ile" cx={px(-2.35)} cy={py(46.72)} rx="12" ry="5" fill="rgba(76,195,148,0.035)" stroke="rgba(76,195,148,0.55)" strokeWidth="1.2" />
       {MARCHE.codes_postaux.map((c) => {
         const r = 3 + Math.sqrt(c.n / max) * 16;
-        return <circle key={c.cp} cx={px(c.lon)} cy={py(c.lat)} r={r} fill="url(#point)" opacity={0.55 + 0.45 * Math.sqrt(c.n / max)} />;
+        return (
+          <circle
+            key={c.cp}
+            className="point"
+            style={{ ["--d" as string]: delai(c.lon) }}
+            cx={px(c.lon)}
+            cy={py(c.lat)}
+            r={r}
+            fill="url(#point)"
+            opacity={0.55 + 0.45 * Math.sqrt(c.n / max)}
+          />
+        );
       })}
       {MARCHE.codes_postaux
         .filter((c) => ETIQUETTES.includes(c.cp))
         .map((c) => (
-          <text key={c.cp} x={px(c.lon) + 10} y={py(c.lat) - 10} fontSize="11" fill="var(--texte-2)">
+          <text key={c.cp} className="etiquette" x={px(c.lon) + 10} y={py(c.lat) - 10} fontSize="11" fill="var(--texte-2)">
             {c.commune.replace(/\s*\(.*\)$/, "")}
           </text>
         ))}
