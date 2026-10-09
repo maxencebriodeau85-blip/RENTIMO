@@ -18,7 +18,6 @@ export const metadata: Metadata = {
     type: "website",
     locale: "fr_FR",
     siteName: "Rentimo",
-    images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   icons: { icon: "/icon.svg" },
 };

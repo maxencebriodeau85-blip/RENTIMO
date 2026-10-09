@@ -53,7 +53,7 @@ export function GraphiqueProjection({ series, etiquettes, format }: { series: Se
       ))}
       {etiquettes.map((e, i) =>
         (i % pasX === 0 && n - 1 - i >= pasX / 2) || i === n - 1 ? (
-          <text key={i} x={x(i)} y={H - 8} textAnchor="middle" fontSize="12" fill="var(--texte-3)">
+          <text key={i} x={x(i)} y={H - 8} textAnchor={i === n - 1 ? "end" : i === 0 ? "start" : "middle"} fontSize="12" fill="var(--texte-3)">
             {e}
           </text>
         ) : null,

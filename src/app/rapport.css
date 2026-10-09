@@ -29,6 +29,15 @@
   color: #111a26;
 }
 
+.rapport > *,
+.rapport-colonnes > * {
+  min-width: 0;
+}
+
+.rapport-projection svg {
+  max-width: 620px;
+}
+
 .rapport-tete {
   display: flex;
   justify-content: space-between;
@@ -243,21 +252,28 @@
     size: A4;
     margin: 12mm;
   }
+  :root {
+    color-scheme: light;
+  }
   html,
   body {
     background: #fff !important;
+    color: #111a26;
   }
-  body * {
-    visibility: hidden;
+  .entete,
+  .pied,
+  .pas-imprime,
+  .sr-only {
+    display: none !important;
   }
-  .rapport-impression,
-  .rapport-impression * {
-    visibility: visible;
+  .page,
+  .conteneur {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
   }
   .rapport-impression {
-    display: block;
-    position: absolute;
-    inset: 0 0 auto 0;
+    display: block !important;
   }
   .rapport {
     padding: 0;
@@ -282,8 +298,5 @@
   }
   .rapport-synthese {
     grid-template-columns: 130px 1fr;
-  }
-  .pas-imprime {
-    display: none !important;
   }
 }
