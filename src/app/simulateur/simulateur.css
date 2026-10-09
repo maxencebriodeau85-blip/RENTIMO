@@ -1,0 +1,406 @@
+.sim-entete {
+  margin-bottom: 32px;
+  display: grid;
+  gap: 12px;
+}
+
+.sim-grille {
+  display: grid;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.sim-form {
+  display: grid;
+  gap: 16px;
+}
+
+.sim-bloc {
+  padding: 20px 22px 22px;
+  border-radius: 18px;
+  margin: 0;
+  min-width: 0;
+}
+
+fieldset.sim-bloc {
+  border: 1px solid var(--trait-fort);
+}
+
+.sim-bloc legend,
+.sim-avance summary {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0;
+  float: left;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.sim-avance summary {
+  float: none;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.sim-avance summary::-webkit-details-marker {
+  display: none;
+}
+
+.sim-avance summary::after {
+  content: "+";
+  color: var(--texte-3);
+}
+
+.sim-avance[open] summary::after {
+  content: "−";
+}
+
+.sim-avance[open] summary {
+  margin-bottom: 8px;
+}
+
+.sim-bloc legend + * {
+  clear: both;
+}
+
+.sim-pilules {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.sim-indice {
+  margin: 12px 0 0;
+  line-height: 1.5;
+}
+
+.sim-indice .btn-texte {
+  font-size: 13px;
+}
+
+.sim-resultats {
+  position: sticky;
+  top: 80px;
+  display: grid;
+  gap: 16px;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(236, 239, 243, 0.18) transparent;
+}
+
+.sim-synthese {
+  padding: 22px;
+  display: grid;
+  gap: 18px;
+}
+
+.sim-score {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.sim-anneau {
+  position: relative;
+  width: 84px;
+  height: 84px;
+}
+
+.sim-anneau span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+}
+
+.sim-kpi {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.sim-kpi .tuile-valeur {
+  font-size: 24px;
+}
+
+.sim-constats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--texte-2);
+}
+
+.sim-constats li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.sim-constats li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--lueur);
+}
+
+.sim-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sim-h2 {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+.sim-bloc-tete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.sim-bloc-tete .sim-h2 {
+  margin: 0;
+}
+
+.ligne-active td {
+  background: rgba(240, 180, 103, 0.06);
+}
+
+.sim-legende {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  font-size: 13px;
+  color: var(--texte-2);
+  margin: 10px 0 0;
+}
+
+.sim-legende .trait {
+  display: inline-block;
+  width: 20px;
+  border-top: 2px solid var(--maree);
+}
+
+.sim-legende .trait.lueur {
+  border-top: 2px dashed var(--lueur);
+  margin-left: 10px;
+}
+
+.sim-revente,
+.sim-plan {
+  margin: 18px 0 0;
+  display: grid;
+  gap: 0;
+}
+
+.sim-revente {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.sim-revente div {
+  border-top: 1px solid var(--trait);
+  padding-top: 10px;
+}
+
+.sim-revente dt,
+.sim-plan dt {
+  font-size: 13px;
+  color: var(--texte-2);
+}
+
+.sim-revente dd {
+  margin: 2px 0 0;
+  font-size: 19px;
+}
+
+.sim-plan {
+  margin-top: 0;
+}
+
+.sim-plan div {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--trait);
+  font-size: 14px;
+}
+
+.sim-plan dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.sim-plan .total {
+  font-weight: 500;
+  border-bottom-color: var(--trait-fort);
+}
+
+.sim-plan .total dt {
+  color: var(--texte);
+}
+
+.sim-pro {
+  padding: 4px 4px 0;
+}
+
+/* Jauge de prix */
+.jauge {
+  padding: 18px 0 6px;
+}
+
+.jauge-piste {
+  position: relative;
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(236, 239, 243, 0.08);
+}
+
+.jauge-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 99px;
+  background: rgba(76, 195, 148, 0.28);
+}
+
+.jauge-med {
+  position: absolute;
+  top: -5px;
+  width: 2px;
+  height: 18px;
+  background: var(--maree);
+  transform: translateX(-1px);
+}
+
+.jauge-bien {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--lueur);
+  box-shadow: 0 0 14px rgba(240, 180, 103, 0.7);
+  transform: translate(-50%, -50%);
+}
+
+.jauge-legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--texte-3);
+}
+
+.jauge-legende span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jauge-legende i {
+  display: inline-block;
+  width: 12px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.jl-zone {
+  background: rgba(76, 195, 148, 0.4);
+}
+
+.jl-med {
+  width: 2px !important;
+  height: 12px !important;
+  background: var(--maree);
+}
+
+.jl-bien {
+  width: 9px !important;
+  height: 9px !important;
+  background: var(--lueur);
+}
+
+/* Barre mobile */
+.sim-barre {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .sim-grille {
+    grid-template-columns: 1fr;
+  }
+  .sim-resultats {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+  .sim-barre {
+    display: block;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 40;
+  }
+  .sim-barre a {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: var(--verre-fort);
+    border: 1px solid var(--trait-fort);
+    backdrop-filter: blur(14px);
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--texte-2);
+  }
+  .sim-barre b {
+    color: var(--texte);
+    font-weight: 500;
+    margin-left: 4px;
+  }
+  .simulateur {
+    padding-bottom: 72px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sim-kpi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sim-revente {
+    grid-template-columns: 1fr;
+  }
+  .sim-bloc {
+    padding: 16px;
+  }
+  .ligne-champ label {
+    font-size: 13px;
+  }
+}

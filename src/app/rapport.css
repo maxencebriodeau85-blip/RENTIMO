@@ -1,0 +1,289 @@
+/* Rapport : feuille claire, imprimable. */
+.rapport {
+  --texte: #111a26;
+  --texte-2: #4a5462;
+  --texte-3: #6b7480;
+  background: #fff;
+  color: #111a26;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 36px 40px;
+  border-radius: 8px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  gap: 26px;
+}
+
+.rapport h1 {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.rapport h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  letter-spacing: 0;
+  color: #111a26;
+}
+
+.rapport-tete {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid #dfe3e8;
+  padding-bottom: 14px;
+}
+
+.rapport-marque {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rapport-contact,
+.rapport-date {
+  font-size: 12px;
+  color: #5d6775;
+}
+
+.rapport-date {
+  text-align: right;
+}
+
+.rapport-titre p {
+  margin: 4px 0 0;
+  color: #5d6775;
+}
+
+.rapport-synthese {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.rapport-score {
+  border: 1px solid #dfe3e8;
+  border-radius: 10px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 14px;
+}
+
+.rapport-score b {
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.rapport-score span {
+  color: #6b7480;
+}
+
+.rapport-score em {
+  font-style: normal;
+  font-size: 12px;
+  margin-top: 6px;
+  color: #4a5462;
+}
+
+.rapport-kpi {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.rapport-kpi div {
+  background: #f2f4f7;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.rapport-kpi dt {
+  font-size: 11px;
+  color: #5d6775;
+}
+
+.rapport-kpi dd {
+  margin: 2px 0 0;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+
+.rapport .pos {
+  color: #1d7f57;
+}
+
+.rapport .neg {
+  color: #b44a36;
+}
+
+.rapport-colonnes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.rapport table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.rapport td,
+.rapport th {
+  padding: 5px 0;
+  border-bottom: 1px solid #eceff3;
+  text-align: left;
+}
+
+.rapport td:last-child,
+.rapport th:last-child {
+  text-align: right;
+}
+
+.rapport tr.total td {
+  font-weight: 600;
+  border-bottom-color: #c9cfd6;
+}
+
+.rapport-fisc th,
+.rapport-annees th {
+  font-weight: 500;
+  color: #5d6775;
+  font-size: 11.5px;
+}
+
+.rapport-fisc td + td,
+.rapport-fisc th + th,
+.rapport-annees td + td,
+.rapport-annees th + th {
+  text-align: right;
+}
+
+.rapport-fisc tr.choisi td {
+  background: #f2f4f7;
+}
+
+.rapport-annees {
+  font-size: 11.5px;
+  margin-top: 10px;
+}
+
+.rapport-annees td,
+.rapport-annees th {
+  padding: 3px 4px;
+}
+
+.rapport-note,
+.rapport-legende {
+  font-size: 11.5px;
+  color: #6b7480;
+  margin: 8px 0 0;
+}
+
+.rapport-legende {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rapport-legende .trait {
+  display: inline-block;
+  width: 22px;
+  border-top: 2px solid #2f7d5f;
+}
+
+.rapport-legende .trait.tirets {
+  border-top: 2px dashed #8a94a3;
+  margin-left: 12px;
+}
+
+.rapport-marche p {
+  margin: 0;
+  color: #333d4a;
+}
+
+.rapport-pied {
+  border-top: 1px solid #dfe3e8;
+  padding-top: 12px;
+  font-size: 11px;
+  color: #6b7480;
+}
+
+@media (max-width: 700px) {
+  .rapport {
+    padding: 22px 18px;
+  }
+  .rapport-synthese,
+  .rapport-colonnes {
+    grid-template-columns: 1fr;
+  }
+  .rapport-kpi {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rapport-annees {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* ---------- Impression ---------- */
+.rapport-impression {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .rapport-impression,
+  .rapport-impression * {
+    visibility: visible;
+  }
+  .rapport-impression {
+    display: block;
+    position: absolute;
+    inset: 0 0 auto 0;
+  }
+  .rapport {
+    padding: 0;
+    max-width: none;
+    border-radius: 0;
+    font-size: 11.5px;
+    gap: 18px;
+  }
+  .rapport-projection {
+    break-before: page;
+  }
+  .rapport-colonnes,
+  .rapport-synthese,
+  .rapport-fisc {
+    break-inside: avoid;
+  }
+  .rapport-colonnes {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rapport-kpi {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .rapport-synthese {
+    grid-template-columns: 130px 1fr;
+  }
+  .pas-imprime {
+    display: none !important;
+  }
+}

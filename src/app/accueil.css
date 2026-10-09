@@ -1,0 +1,598 @@
+/* ---------- Accueil : la descente le long de l'immeuble ---------- */
+
+.hero {
+  position: relative;
+  min-height: calc(100svh - 64px);
+  display: grid;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-visuel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(62%, 980px);
+  z-index: -1;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%), linear-gradient(to bottom, #000 78%, transparent);
+  mask-image: linear-gradient(to right, transparent 0%, #000 34%);
+}
+
+.hero-visuel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 8%;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 180px;
+  background: linear-gradient(to bottom, transparent, var(--nuit));
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero-int {
+  display: grid;
+  align-content: center;
+  gap: 26px;
+  padding-top: 72px;
+  padding-bottom: 96px;
+}
+
+.hero h1 {
+  font-size: clamp(40px, 4.5vw, 66px);
+}
+
+.hero-chapo {
+  max-width: 30em;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.hero-faits {
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 0;
+  display: flex;
+  gap: 14px 36px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--texte-2);
+  max-width: 42em;
+}
+
+.hero-faits strong {
+  color: var(--texte);
+  font-weight: 500;
+}
+
+/* ---------- Bandes ---------- */
+.bandes {
+  display: grid;
+}
+
+.bande {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+  padding: 64px 0;
+  opacity: calc(0.3 + 0.7 * var(--focus, 1));
+  transition: opacity 0.25s linear;
+}
+
+.bande-texte {
+  display: grid;
+  gap: 18px;
+  align-content: center;
+}
+
+.bande-texte .btn {
+  justify-self: start;
+}
+
+.bande-scene {
+  position: relative;
+  min-height: 460px;
+  border-radius: 26px;
+  overflow: hidden;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  border: 1px solid var(--trait);
+  background: var(--nuit-2);
+}
+
+.scene-fond {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url(/visuels/tour-nuit-statique.svg) 50% var(--cadrage, 40%) / 150% auto no-repeat, #0b121c;
+  filter: brightness(calc(0.55 + 0.25 * var(--focus, 1))) saturate(1.05);
+}
+
+.scene-fond::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 70% 50%, transparent 30%, rgba(7, 11, 18, 0.75) 100%);
+}
+
+.panneau {
+  position: relative;
+  padding: 24px 26px 26px;
+}
+
+.panneau h3 {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.panneau-tete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.panneau-sim {
+  width: min(100%, 440px);
+}
+
+.panneau-kpi {
+  width: min(100%, 640px);
+  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tuile-courbe svg {
+  margin-top: 8px;
+  width: 100%;
+  height: auto;
+}
+
+.panneau-fisc {
+  width: min(100%, 600px);
+}
+
+.fisc-grille {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 26px;
+  padding: 18px;
+  border-radius: var(--r-tuile);
+  border: 1px solid var(--trait);
+  background: rgba(10, 16, 25, 0.5);
+}
+
+.fisc-verdict {
+  margin: 16px 2px 0;
+  font-size: 14px;
+  color: var(--texte-2);
+}
+
+/* Cartes de biens */
+.scene-cartes {
+  background: radial-gradient(90% 80% at 60% 40%, #142033, #0a1019);
+  padding: 28px;
+}
+
+.cartes-biens {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.carte-bien {
+  background: #f2f4f7;
+  color: #0e1520;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.8);
+}
+
+.carte-image {
+  aspect-ratio: 16 / 10;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.carte-score {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 14px;
+  color: var(--texte);
+  background: rgba(10, 16, 25, 0.72);
+  border: 1px solid rgba(236, 239, 243, 0.22);
+  backdrop-filter: blur(6px);
+}
+
+.carte-score .discret {
+  font-size: 12px;
+  margin-left: 1px;
+}
+
+.carte-corps {
+  padding: 14px 16px 16px;
+}
+
+.carte-corps h3 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.carte-corps .petit {
+  color: #5d6775;
+  margin: 2px 0 12px;
+  font-size: 13px;
+}
+
+.carte-corps dl {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.carte-corps dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  border-top: 1px solid rgba(14, 21, 32, 0.08);
+  padding-top: 6px;
+}
+
+.carte-corps dt {
+  color: #5d6775;
+}
+
+.carte-corps dd {
+  margin: 0;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.carte-bien .positif {
+  color: #1d7f57;
+}
+
+.carte-bien .negatif {
+  color: #b44a36;
+}
+
+/* Carte de Vendée */
+.scene-carte {
+  background: radial-gradient(80% 70% at 60% 45%, #0f1c24, #070c13);
+  padding: 24px;
+}
+
+.carte {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+}
+
+.panneau-donnees {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  padding: 16px 20px;
+  border-radius: 16px;
+}
+
+.panneau-donnees .tuile-valeur {
+  font-size: 22px;
+  margin: 0;
+}
+
+/* Pile de rapports */
+.scene-rapport .pile {
+  position: relative;
+  width: 300px;
+  height: 380px;
+}
+
+.feuille {
+  position: absolute;
+  inset: 0 auto auto 30px;
+  width: 260px;
+  height: 350px;
+  border-radius: 6px;
+  background: #f5f6f8;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.75);
+}
+
+.f3 {
+  transform: rotate(-9deg) translate(-38px, 18px);
+  background: #d9dde3;
+}
+
+.f2 {
+  transform: rotate(-4deg) translate(-18px, 8px);
+  background: #e7eaee;
+}
+
+.f1 {
+  transform: rotate(2.5deg);
+  padding: 20px 20px;
+  color: #0e1520;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.feuille-tete {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #6a7380;
+  border-bottom: 1px solid #dde1e6;
+  padding-bottom: 8px;
+}
+
+.feuille-tete span:first-child {
+  font-weight: 600;
+  color: #0e1520;
+}
+
+.feuille-titre {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.feuille-kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.feuille-kpi div {
+  background: #e9ecf0;
+  border-radius: 5px;
+  padding: 7px 8px;
+  display: grid;
+  gap: 2px;
+}
+
+.feuille-kpi span {
+  font-size: 8.5px;
+  color: #6a7380;
+}
+
+.feuille-kpi b {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.feuille-courbe {
+  width: 100%;
+  height: auto;
+}
+
+.feuille-lignes {
+  display: grid;
+  gap: 7px;
+}
+
+.feuille-lignes i {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: #dfe3e8;
+}
+
+/* ---------- Bandeau pro ---------- */
+.pro-bandeau {
+  margin-top: 96px;
+}
+
+.pro-bandeau {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 0.85fr;
+  gap: 40px;
+  align-items: end;
+  padding-top: 56px;
+  padding-bottom: 56px;
+  border-top: 1px solid var(--trait-fort);
+  border-bottom: 1px solid var(--trait-fort);
+}
+
+.pro-texte {
+  display: grid;
+  gap: 18px;
+}
+
+.pro-liste {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+  color: var(--texte-2);
+}
+
+.pro-liste li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.pro-liste li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 9px;
+  height: 9px;
+  border-radius: 1.5px;
+  background: var(--lueur);
+  box-shadow: 0 0 12px rgba(240, 180, 103, 0.6);
+}
+
+.pro-action {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.pro-action p {
+  margin: 0;
+}
+
+/* ---------- FAQ ---------- */
+.faq {
+  margin-top: 120px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr);
+  gap: 48px;
+}
+
+.faq-liste details {
+  border-bottom: 1px solid var(--trait);
+  padding: 20px 0;
+}
+
+.faq-liste details:first-child {
+  border-top: 1px solid var(--trait);
+}
+
+.faq-liste summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.faq-liste summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-liste summary::after {
+  content: "+";
+  color: var(--texte-3);
+  font-weight: 300;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.faq-liste details[open] summary::after {
+  content: "−";
+}
+
+.faq-liste p {
+  color: var(--texte-2);
+  margin: 12px 0 0;
+  max-width: 62ch;
+}
+
+/* ---------- Final ---------- */
+.final {
+  margin-top: 140px;
+  display: grid;
+  gap: 32px;
+  justify-items: start;
+}
+
+.final h2 {
+  max-width: 13ch;
+  font-size: clamp(40px, 5vw, 68px);
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 900px) {
+  .hero-visuel {
+    width: 100%;
+    opacity: 0.32;
+    -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
+    mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  }
+  .hero-visuel img {
+    object-position: 70% 0%;
+  }
+  .hero-int {
+    padding-top: 48px;
+    padding-bottom: 64px;
+  }
+  .bande {
+    grid-template-columns: 1fr;
+    padding: 44px 0;
+    opacity: 1;
+  }
+  .bande-scene {
+    min-height: 0;
+    padding: 18px;
+    border-radius: 20px;
+  }
+  .panneau-kpi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tuile-courbe {
+    grid-column: 1 / -1;
+  }
+  .fisc-grille {
+    grid-template-columns: 1fr 1fr;
+  }
+  .cartes-biens {
+    grid-template-columns: repeat(3, 78%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+  }
+  .carte-bien {
+    scroll-snap-align: start;
+  }
+  .panneau-donnees {
+    position: static;
+    margin-top: 12px;
+    width: 100%;
+  }
+  .scene-carte {
+    display: block;
+  }
+  .scene-rapport {
+    padding: 40px 18px;
+  }
+  .pro-bandeau {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .faq {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 420px) {
+  .panneau {
+    padding: 18px 16px 20px;
+  }
+  .tuile-valeur {
+    font-size: 23px;
+  }
+  .scene-rapport .pile {
+    transform: scale(0.86);
+  }
+}

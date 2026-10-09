@@ -1,0 +1,65 @@
+.tri {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tri:hover {
+  color: var(--texte);
+}
+
+.marche-notes {
+  margin-top: 16px;
+  max-width: 80ch;
+}
+
+.barometre {
+  margin-top: 64px;
+  padding: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 32px;
+}
+
+.commune-kpi {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.commune-kpi .tuile-valeur {
+  font-size: 26px;
+}
+
+.commune-grille {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+}
+
+.commune-grille .verre {
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.commune-grille h2 {
+  font-size: 19px;
+  font-weight: 500;
+}
+
+@media (max-width: 860px) {
+  .barometre,
+  .commune-grille {
+    grid-template-columns: 1fr;
+  }
+  .commune-kpi {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
