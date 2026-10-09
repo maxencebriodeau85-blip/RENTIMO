@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FISCAL } from "@/lib/calculs";
+import { COUT_CLASSE_M2, DECOTE_PASSOIRE, SUPER_DEFICIT } from "@/lib/renovation";
 
 export const metadata: Metadata = {
   title: "Méthode de calcul",
@@ -75,11 +76,38 @@ export default function PageMethodologie() {
         </ul>
         <p>75 et plus : très bon. 60 à 74 : bon. 45 à 59 : moyen. En dessous : fragile.</p>
 
+        <h2 id="renovation">Biens à rénover et radar des passoires</h2>
+        <p>
+          <strong>Travaux</strong> : {COUT_CLASSE_M2.Maison} € TTC par m² habitable et par classe DPE gagnée pour une maison,{" "}
+          {COUT_CLASSE_M2.Appartement} € pour un appartement (isolation, chauffage, ventilation). Ce sont des moyennes de chantiers types : l'audit
+          énergétique ou un devis les remplace. Les aides à la rénovation ne sont pas déduites.
+        </p>
+        <p>
+          <strong>Valeur une fois rénové</strong> : médiane DVF du secteur pour le type de bien. <strong>Prix d'achat maximum conseillé</strong> : le
+          prix qui laisse un coût de revient (prix, notaire à 8 %, travaux) 10 % sous cette valeur.
+        </p>
+        <p>
+          <strong>Fiscalité</strong> : en location nue au réel, les travaux sont déduits l'année où ils sont payés. Le déficit foncier s'impute sur
+          le revenu global dans la limite de 10 700 € par an, {SUPER_DEFICIT.plafond.toLocaleString("fr-FR")} € pour une rénovation énergétique qui
+          fait passer le logement de E, F ou G à D ou mieux (dépenses payées jusqu'au {SUPER_DEFICIT.finPaiements}). En LMNP réel, les travaux
+          s'amortissent sur quinze ans.
+        </p>
+        <p>
+          <strong>Radar des passoires</strong> : DPE de logements existants classés F ou G et établis sur les 90 derniers jours en Vendée (base
+          publique « DPE logements existants » de l'ADEME), comptés par code postal. Prix visé : médiane DVF moins {DECOTE_PASSOIRE * 100} %.
+          Rendement après travaux : loyer de marché hors charges (92 % du loyer charges comprises) sur douze mois, divisé par le prix visé plus les
+          travaux pour atteindre D. Aucune adresse ni aucun propriétaire n'est traité.
+        </p>
+        <p>
+          <strong>Interdictions de louer</strong> (loi Climat et résilience) : logements G depuis le 1er janvier 2025, F à partir de 2028, E à partir
+          de 2034, pour tout nouveau bail ou renouvellement.
+        </p>
+
         <h2>Données</h2>
         <p>
           <strong>Prix</strong> : demandes de valeurs foncières (DVF) publiées par la DGFiP, ventes de logements de janvier 2024 à décembre 2025 en
           Vendée, prix au m² compris entre 300 € et 25 000 €. <strong>Loyers</strong> : carte des loyers 2025 du ministère du Logement, loyers
-          d'annonce charges comprises de logements non meublés, rattachés aux codes postaux au prorata des ventes.
+          d'annonce charges comprises de logements non meublés, rattachés aux codes postaux au prorata des ventes. <strong>DPE</strong> : base « DPE logements existants » de l'ADEME, publiée sur data.ademe.fr et mise à jour chaque jour.
         </p>
 
         <h2>Limites</h2>

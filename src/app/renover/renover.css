@@ -1,0 +1,346 @@
+/* Analyse d'un bien à rénover. L'élément fort de la page : l'échelle DPE et le saut de classe. */
+
+.ren .champ textarea {
+  min-height: 96px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ren-lire {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin-top: 12px;
+}
+
+.ren-lu {
+  margin: 0;
+  color: var(--maree);
+}
+
+.ren-lu.vide {
+  color: var(--alerte);
+}
+
+/* Choix d'une classe : sept pastilles aux couleurs de l'étiquette */
+.ren-ligne-classe {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.ren-ligne-classe:first-of-type {
+  margin-top: 0;
+}
+
+.ren-classes {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.ren-classe {
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--trait-fort);
+  background: rgba(10, 16, 25, 0.5);
+  color: var(--texte-2);
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.ren-classe::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--c);
+}
+
+.ren-classe:hover:not(:disabled) {
+  border-color: var(--c);
+  color: var(--texte);
+}
+
+.ren-classe[aria-pressed="true"] {
+  background: var(--c);
+  border-color: var(--c);
+  color: #0b1118;
+}
+
+.ren-classe:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.ren-classe:focus-visible {
+  outline: 2px solid var(--texte);
+  outline-offset: 2px;
+}
+
+.ren-case {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--texte-2);
+  cursor: pointer;
+}
+
+.ren-case input {
+  margin-top: 4px;
+  accent-color: var(--lueur);
+}
+
+/* Verdict */
+.ren-verdict {
+  border-top: 3px solid var(--trait-fort);
+}
+
+.ren-verdict.ton-bon {
+  border-top-color: var(--maree);
+}
+
+.ren-verdict.ton-juste {
+  border-top-color: var(--lueur);
+}
+
+.ren-verdict.ton-cher {
+  border-top-color: var(--alerte);
+}
+
+.ren-verdict-texte {
+  margin: 6px 0 0;
+  color: var(--texte-2);
+  font-size: 15px;
+}
+
+.ren-prixmax {
+  display: grid;
+  gap: 2px;
+  padding: 16px 18px;
+  border-radius: var(--r-tuile);
+  background: var(--lueur-douce);
+  border: 1px solid rgba(240, 180, 103, 0.3);
+}
+
+.ren-prixmax b {
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--lueur);
+  line-height: 1.15;
+}
+
+.ren-prixmax .petit {
+  margin: 0;
+}
+
+/* Échelle DPE */
+.echelle {
+  margin: 0;
+}
+
+.echelle-corps {
+  position: relative;
+}
+
+.echelle-barres {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.echelle-barres li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 136px;
+  column-gap: 30px;
+  align-items: center;
+  height: 30px;
+}
+
+.echelle-barre {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: calc(34% + var(--i) * 11%);
+  padding-left: 12px;
+  background: var(--c);
+  color: #0b1118;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+  border-radius: 4px 0 0 4px;
+  opacity: 0.22;
+  transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+.echelle-barre b {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.echelle-barres li.dans .echelle-barre {
+  opacity: 0.6;
+}
+
+.echelle-barres li.actuel .echelle-barre,
+.echelle-barres li.cible .echelle-barre {
+  opacity: 1;
+}
+
+.echelle-barres li.cible .echelle-barre {
+  filter: drop-shadow(0 0 10px var(--c));
+}
+
+.echelle-mot {
+  font-size: 14px;
+  color: var(--texte);
+  white-space: nowrap;
+}
+
+.echelle-barres li.actuel .echelle-mot {
+  color: var(--texte-2);
+}
+
+/* Le saut : une flèche qui monte de la classe actuelle à l'objectif */
+.echelle-saut {
+  position: absolute;
+  right: calc(136px + 14px);
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to top, var(--de), var(--vers));
+  transition: top 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.echelle-saut::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid var(--vers);
+  border-top: 2px solid var(--vers);
+  transform: translateX(-50%) rotate(45deg);
+  transform-origin: center;
+  margin-left: -1px;
+}
+
+.echelle-saut::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--de);
+  transform: translateX(-50%);
+}
+
+.echelle-legende {
+  margin-top: 16px;
+  font-size: 15px;
+  color: var(--texte-2);
+}
+
+.echelle-legende b {
+  color: var(--texte);
+  font-weight: 500;
+}
+
+/* Alertes réglementaires */
+.ren-alertes {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--texte-2);
+}
+
+.ren-alertes:empty {
+  display: none;
+}
+
+.ren-alertes li {
+  position: relative;
+  padding-left: 20px;
+}
+
+.ren-alertes li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--lueur);
+}
+
+.ren-alertes li.alerte::before {
+  background: var(--alerte);
+}
+
+/* Liste prix et fiscalité */
+.ren-liste {
+  margin: 0;
+  display: grid;
+}
+
+.ren-liste div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--trait);
+}
+
+.ren-liste dt {
+  font-size: 14px;
+  color: var(--texte-2);
+}
+
+.ren-liste dd {
+  margin: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .echelle-barres li {
+    grid-template-columns: minmax(0, 1fr) 104px;
+    column-gap: 24px;
+  }
+  .echelle-saut {
+    right: calc(104px + 11px);
+  }
+  .echelle-mot {
+    font-size: 12px;
+  }
+  .ren-prixmax b {
+    font-size: 28px;
+  }
+  .ren-liste div {
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .echelle-saut {
+    transition: none;
+  }
+}

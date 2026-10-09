@@ -2,7 +2,7 @@ import { MARCHE } from "@/lib/marche";
 import { nombre } from "@/lib/format";
 
 // Contour simplifié de la Vendée (lon, lat) — illustration, pas une carte de précision.
-const CONTOUR: [number, number][] = [
+export const CONTOUR: [number, number][] = [
   [-2.03, 46.99], [-1.92, 46.97], [-1.84, 46.94], [-1.74, 46.92], [-1.64, 46.87], [-1.57, 46.92], [-1.52, 47.02],
   [-1.42, 47.04], [-1.32, 47.05], [-1.25, 47.09], [-1.16, 47.08], [-1.07, 47.07], [-0.98, 47.05], [-0.89, 47.02],
   [-0.84, 46.97], [-0.8, 46.9], [-0.74, 46.84], [-0.7, 46.77], [-0.65, 46.7], [-0.62, 46.62], [-0.63, 46.53],
@@ -11,14 +11,14 @@ const CONTOUR: [number, number][] = [
   [-1.79, 46.48], [-1.83, 46.55], [-1.87, 46.63], [-1.94, 46.69], [-2.0, 46.74], [-2.07, 46.8], [-2.14, 46.85],
   [-2.13, 46.9], [-2.07, 46.93],
 ];
-const NOIRMOUTIER: [number, number][] = [
+export const NOIRMOUTIER: [number, number][] = [
   [-2.15, 46.89], [-2.2, 46.93], [-2.27, 46.98], [-2.31, 47.02], [-2.26, 47.04], [-2.22, 47.0], [-2.17, 46.95],
 ];
 
 const K = 420;
-const px = (lon: number) => (lon + 2.42) * 0.686 * K;
-const py = (lat: number) => (47.13 - lat) * K;
-const chemin = (pts: [number, number][]) => "M" + pts.map(([lo, la]) => `${px(lo).toFixed(1)} ${py(la).toFixed(1)}`).join(" L") + "Z";
+export const px = (lon: number) => (lon + 2.42) * 0.686 * K;
+export const py = (lat: number) => (47.13 - lat) * K;
+export const chemin = (pts: [number, number][]) => "M" + pts.map(([lo, la]) => `${px(lo).toFixed(1)} ${py(la).toFixed(1)}`).join(" L") + "Z";
 
 const ETIQUETTES = ["85000", "85100", "85160", "85200", "85500", "85300"];
 

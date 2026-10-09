@@ -29,6 +29,10 @@ const FAQ = [
     r: "Ils appliquent les règles en vigueur pour les revenus 2025-2026 : abattements micro, amortissements LMNP, déficit foncier plafonné, plus-value avec abattements et réintégration des amortissements LMNP. Ce sont des estimations : pour décider, faites valider votre cas par un expert-comptable.",
   },
   {
+    q: "Rentimo aide-t-il à trouver un bien à rénover ?",
+    r: "Oui. L'analyse d'un bien à rénover estime les travaux pour gagner des classes DPE, la valeur une fois rénové, le déficit foncier et le prix d'achat à ne pas dépasser. Le radar des passoires, réservé à l'offre Pro, repère chaque jour les communes de Vendée où les DPE F et G se multiplient.",
+  },
+  {
     q: "Quelles villes sont couvertes ?",
     r: `Le simulateur fonctionne partout en France avec vos propres chiffres. Les prix du marché couvrent pour l'instant les ${MARCHE.codes_postaux.length} codes postaux de Vendée ; les départements voisins arrivent.`,
   },
@@ -211,6 +215,7 @@ export default function Accueil() {
           <li>Rapport PDF à votre nom, sans logo Rentimo</li>
           <li>Page de partage avec votre contact pour l'acquéreur</li>
           <li>Prix DVF du secteur pour défendre un prix de vente</li>
+          <li>Radar des passoires : où les DPE F et G arrivent sur le marché</li>
           <li>Simulations illimitées et sauvegardées</li>
         </ul>
         <div className="pro-action">

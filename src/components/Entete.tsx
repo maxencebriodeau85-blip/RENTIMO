@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase";
 const LIENS = [
   { href: "/simulateur", label: "Simulateur", cls: "" },
   { href: "/marche", label: "Prix du marché", cls: "lien-secondaire" },
+  { href: "/renover", label: "Biens à rénover", cls: "lien-secondaire" },
   { href: "/pro", label: "Offre pro", cls: "lien-tertiaire" },
   { href: "/tarifs", label: "Tarifs", cls: "lien-secondaire" },
 ];

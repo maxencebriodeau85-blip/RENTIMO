@@ -39,6 +39,7 @@ export interface Entree {
   revalo_loyer_pct: number;
   horizon: number; // années de détention avant revente
   frais_revente_pct: number;
+  plafond_deficit_foncier?: number; // absent = 10 700 € ; 21 400 € pour une rénovation énergétique E/F/G vers A-D (2023-2027)
 }
 
 export const ENTREE_DEFAUT: Entree = {
@@ -340,7 +341,8 @@ function impotAnnee(e: Entree, regime: Regime, c: ContexteAnnee, etat: Etat, bas
   } else {
     const deficit = -resultat;
     // Part imputable sur le revenu global : déficit issu des charges non financières, plafonné
-    const imputable = Math.min(FISCAL.deficit_foncier_plafond, Math.max(0, chargesNonFin - Math.max(0, c.loyers - chargesFin)), deficit);
+    const plafond = e.plafond_deficit_foncier && e.plafond_deficit_foncier > 0 ? e.plafond_deficit_foncier : FISCAL.deficit_foncier_plafond;
+    const imputable = Math.min(plafond, Math.max(0, chargesNonFin - Math.max(0, c.loyers - chargesFin)), deficit);
     economieRevenuGlobal = imputable * tmi;
     const reportable = deficit - imputable;
     if (reportable > 0) etat.deficitFoncier.push({ annee: c.annee, montant: reportable });

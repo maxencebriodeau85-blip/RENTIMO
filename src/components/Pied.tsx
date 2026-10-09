@@ -22,6 +22,7 @@ export function Pied() {
             <ul>
               <li><Link href="/simulateur">Simulateur</Link></li>
               <li><Link href="/marche">Prix du marché</Link></li>
+              <li><Link href="/renover">Biens à rénover</Link></li>
               <li><Link href="/methodologie">Méthode de calcul</Link></li>
             </ul>
           </div>
@@ -29,6 +30,7 @@ export function Pied() {
             <h4>Offre</h4>
             <ul>
               <li><Link href="/pro">Pour les pros</Link></li>
+              <li><Link href="/radar">Radar des passoires</Link></li>
               <li><Link href="/tarifs">Tarifs</Link></li>
               <li><Link href="/connexion">Connexion</Link></li>
             </ul>

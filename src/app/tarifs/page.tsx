@@ -28,6 +28,7 @@ export default function PageTarifs() {
             <li>Prix DVF et loyers de marché du secteur</li>
             <li>{OFFRE.gratuitSauvegardes} simulations enregistrées</li>
             <li>Rapport imprimable et lien de partage</li>
+            <li>Analyse d'un bien à rénover : travaux DPE, prix maximum, déficit foncier</li>
           </ul>
           <Link href="/simulateur" className="btn btn-contour">Lancer une simulation</Link>
         </section>
@@ -43,6 +44,7 @@ export default function PageTarifs() {
             <li>Rapport PDF à votre nom et vos coordonnées, sans marque Rentimo</li>
             <li>Lien de partage avec votre contact pour l'acquéreur</li>
             <li>Comparaison de plusieurs biens côte à côte</li>
+            <li>Radar des passoires : les DPE F et G récents par commune, classés par rendement après travaux</li>
             <li>Réponse par e-mail sous 24 h ouvrées</li>
           </ul>
           <BoutonsPro />

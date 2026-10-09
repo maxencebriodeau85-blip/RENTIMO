@@ -207,6 +207,29 @@
   color: var(--texte-2);
 }
 
+.pro-radar {
+  margin-top: 72px;
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px 40px;
+  flex-wrap: wrap;
+  border-left: 3px solid #eb8235;
+}
+
+.pro-radar > div {
+  flex: 1 1 420px;
+  display: grid;
+  gap: 8px;
+}
+
+.pro-radar p {
+  margin: 0;
+  color: var(--texte-2);
+  max-width: 70ch;
+}
+
 .contact-pro {
   margin-top: 96px;
   display: grid;

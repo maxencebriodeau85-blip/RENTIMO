@@ -85,6 +85,19 @@ export default function PagePro() {
         </div>
       </section>
 
+      <section className="verre pro-radar">
+        <div>
+          <h2 className="titre-m">Prospectez là où les passoires arrivent</h2>
+          <p>
+            Le radar des passoires compte chaque jour les DPE F et G établis en Vendée, commune par commune. Ce sont des propriétaires qui vendent,
+            ou qui devront rénover avant l'interdiction de louer. Vous savez où chercher les mandats, et vous arrivez avec le chiffrage des travaux.
+          </p>
+        </div>
+        <Link href="/radar" className="btn btn-contour">
+          Voir le radar
+        </Link>
+      </section>
+
       <section className="contact-pro" id="contact">
         <div style={{ display: "grid", gap: 14 }}>
           <h2 className="titre-l">Une démonstration de 15 minutes</h2>
