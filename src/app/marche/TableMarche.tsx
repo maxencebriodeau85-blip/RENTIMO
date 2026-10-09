@@ -22,7 +22,7 @@ export function TableMarche({ lignes }: { lignes: LigneMarche[] }) {
   const visibles = useMemo(() => {
     const f = filtre
       .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "")
+      .replace(/\p{Diacritic}/gu, "")
       .toLowerCase()
       .trim();
     const val = (l: LigneMarche): number | string => {
@@ -38,7 +38,7 @@ export function TableMarche({ lignes }: { lignes: LigneMarche[] }) {
       }
     };
     return lignes
-      .filter((l) => !f || `${l.c.cp} ${l.c.commune}`.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().includes(f))
+      .filter((l) => !f || `${l.c.cp} ${l.c.commune}`.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().includes(f))
       .sort((a, b) => {
         const x = val(a), y = val(b);
         return (typeof x === "string" ? x.localeCompare(y as string, "fr") : (x as number) - (y as number)) * tri.sens;

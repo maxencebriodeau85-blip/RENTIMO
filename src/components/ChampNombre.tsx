@@ -5,7 +5,7 @@ import { useEffect, useId, useState } from "react";
 const fmt = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 });
 
 function analyser(s: string): number {
-  const propre = s.replace(/\s| | /g, "").replace(",", ".").replace(/[^0-9.\-]/g, "");
+  const propre = s.replace(/\s/g, "").replace(",", ".").replace(/[^0-9.\-]/g, "");
   const v = parseFloat(propre);
   return Number.isFinite(v) ? v : 0;
 }

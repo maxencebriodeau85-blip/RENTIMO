@@ -17,7 +17,7 @@ export const loyerM2 = (v: number) => `${num2.format(v || 0)} €/m²`;
 export function slugCommune(s: string) {
   return s
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
