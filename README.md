@@ -1,6 +1,10 @@
-# Rentimo v5
+# Rentimo
 
 Simulateur de rentabilité locative (Next.js 14 + Supabase), déployé sur Vercel (projet `rentimo`).
+
+## Mise en ligne
+
+Le projet Vercel est relié à ce dépôt : chaque `git push` sur `main` part en production sur https://rentimo-seven.vercel.app, les autres branches donnent un aperçu.
 
 ## Lancer en local
 
@@ -17,6 +21,8 @@ npm test           # tests du moteur de calcul
 - `public/visuels/*.svg` : immeuble de nuit et vignettes, générés par `node scripts/gen-visuels.mjs`.
 - `supabase/migrations/` : schéma v6 appliqué au projet Supabase `rentimo`.
 - `src/app/api/stripe/webhook` : activation automatique de l'offre Pro après paiement.
+- `src/lib/renovation.ts`, `src/app/renover` : analyse d'un bien à rénover (travaux DPE, prix maximum, lecture d'annonce).
+- `src/lib/radar.ts`, `src/app/api/radar`, `src/app/radar` : radar des passoires (DPE F et G de l'ADEME par code postal, liste complète réservée à l'offre Pro).
 
 ## Variables d'environnement (Vercel)
 
