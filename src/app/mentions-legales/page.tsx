@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EDITEUR } from "@/lib/config";
+import { PHOTOS } from "@/lib/photos";
 
 export const metadata: Metadata = { title: "Mentions légales" };
 
@@ -31,8 +32,24 @@ export default function MentionsLegales() {
         <h2>Données publiques</h2>
         <p>
           Les prix de vente proviennent de la base « Demandes de valeurs foncières » publiée par la DGFiP sous licence ouverte. Les loyers
-          proviennent de la carte des loyers publiée par le ministère chargé du Logement, sous licence ouverte.
+          proviennent de la carte des loyers publiée par le ministère chargé du Logement, sous licence ouverte. Les diagnostics de performance énergétique proviennent de la base « DPE logements existants » de
+          l'ADEME, sous licence ouverte.
         </p>
+        <h2>Crédits photos</h2>
+        <p>
+          Photographies publiées sur Unsplash, sous licence Unsplash. Celles des Sables-d'Olonne ont été prises sur place ; les autres
+          illustrent un type de logement ou de commune.
+        </p>
+        <ul>
+          {Object.entries(PHOTOS).map(([nom, p]) => (
+            <li key={nom}>
+              <a href={p.page} rel="noopener">
+                {p.lieu ? `${p.lieu}` : "Photo"}
+              </a>{" "}
+              par <a href={p.profil} rel="noopener">{p.auteur}</a>
+            </li>
+          ))}
+        </ul>
         <h2>Responsabilité</h2>
         <p>
           Les simulations sont des estimations fondées sur les hypothèses saisies et sur une lecture simplifiée des règles fiscales. Elles ne

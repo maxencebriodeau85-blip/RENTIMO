@@ -4,16 +4,20 @@ import { Focus } from "@/components/accueil/Focus";
 import { Demonstration } from "@/components/accueil/Demonstration";
 import { CarteVendee } from "@/components/accueil/CarteVendee";
 import { Compteur } from "@/components/accueil/Compteur";
+import { Photo } from "@/components/Photo";
 import { MARCHE } from "@/lib/marche";
 import { exempleSecteur } from "@/lib/exemples";
 import { euros, eurosSigne, m2, nombre, pct } from "@/lib/format";
 import { OFFRE } from "@/lib/config";
 
 const CARTES = [
-  { cp: "85100", nom: "Les Sables-d'Olonne", vignette: "cote" },
-  { cp: "85000", nom: "La Roche-sur-Yon", vignette: "ville" },
-  { cp: "85110", nom: "Chantonnay", vignette: "bourg" },
+  { cp: "85100", nom: "Les Sables-d'Olonne", photo: "carte-sables" },
+  { cp: "85000", nom: "La Roche-sur-Yon", photo: "carte-ville" },
+  { cp: "85110", nom: "Chantonnay", photo: "carte-bourg" },
 ] as const;
+
+// Taille demandée pour les photos de la plongée : elles sont agrandies jusqu'à trois fois au défilement.
+const TAILLE_PLONGEE = "(max-width: 900px) 280vw, 160vw";
 
 const FAQ = [
   {
@@ -52,13 +56,15 @@ export default function Accueil() {
 
       <section className="plongee" data-plongee>
         <div className="plongee-cadre">
-          <div className="plongee-tour" data-tour aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/visuels/tour-nuit.svg" alt="" />
+          {/* Plongée : le Remblai des Sables-d'Olonne la nuit, une façade éclairée, puis le salon. */}
+          <div className="plongee-couches" aria-hidden="true">
+            <Photo nom="sables-nuit" sizes={TAILLE_PLONGEE} priorite className="couche" data-couche="1" data-fx="0.4" data-fy="0.285" />
+            <Photo nom="facade-nuit" sizes={TAILLE_PLONGEE} className="couche" data-couche="2" data-fx="0.53" data-fy="0.8" />
+            <div className="couche-lueur" data-lueur />
+            <Photo nom="salon-nuit" sizes={TAILLE_PLONGEE} className="couche" data-couche="3" data-fx="0.5" data-fy="0.56" />
           </div>
           <div className="plongee-voile" aria-hidden="true" />
-          <div className="plongee-lueur" aria-hidden="true" />
-          <div className="plongee-interieur" aria-hidden="true" />
+          <div className="plongee-grain" aria-hidden="true" />
           <div className="plongee-indice" aria-hidden="true" />
         <div className="conteneur hero-int plongee-texte">
           <h1 className="titre-xl">
@@ -106,11 +112,14 @@ export default function Accueil() {
             </p>
           </div>
           <div className="bande-scene scene-cartes">
-            <div className="scene-fond" style={{ ["--image" as string]: "url(/visuels/scene-baie.svg)" }} aria-hidden="true" />
+            <div className="scene-fond" style={{ ["--pos" as string]: "40% 50%" }} aria-hidden="true">
+              <Photo nom="baie-ocean" sizes="(max-width: 900px) 100vw, 1240px" />
+            </div>
             <div className="cartes-biens">
-              {exemples.map(({ cp, nom, vignette, ex }, i) => (
+              {exemples.map(({ cp, nom, photo, ex }, i) => (
                 <article key={cp} className="carte-bien" style={{ ["--i" as string]: i }}>
-                  <div className="carte-image" style={{ backgroundImage: `url(/visuels/vignette-${vignette}.svg)` }}>
+                  <div className="carte-image">
+                    <Photo nom={photo} sizes="(max-width: 900px) 78vw, 250px" />
                     <span className="carte-score">
                       <Compteur valeur={ex!.score.total} />
                       <span className="discret">/100</span>
@@ -175,7 +184,9 @@ export default function Accueil() {
             </p>
           </div>
           <div className="bande-scene scene-rapport">
-            <div className="scene-fond" style={{ ["--image" as string]: "url(/visuels/scene-table.svg)" }} aria-hidden="true" />
+            <div className="scene-fond" style={{ ["--pos" as string]: "70% 50%" }} aria-hidden="true">
+              <Photo nom="table-carnet" sizes="(max-width: 900px) 100vw, 1240px" />
+            </div>
             <div className="pile" aria-hidden="true">
               <div className="feuille f3" />
               <div className="feuille f2" />
@@ -185,6 +196,9 @@ export default function Accueil() {
                   <span>Rapport de simulation</span>
                 </div>
                 <div className="feuille-titre">T2 meublé · Les Sables-d'Olonne</div>
+                <div className="feuille-photo">
+                  <Photo nom="carte-sables" sizes="220px" />
+                </div>
                 <div className="feuille-kpi">
                   <div><span>Rendement net</span><b>{pct(sables?.r.rendement_net_pct)}</b></div>
                   <div><span>Cash-flow</span><b>{eurosSigne(sables?.r.cashflow_mensuel ?? 0)}</b></div>

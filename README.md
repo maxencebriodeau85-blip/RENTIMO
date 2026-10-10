@@ -18,7 +18,9 @@ npm test           # tests du moteur de calcul
 
 - `src/lib/calculs.ts` : moteur de calcul (rendements, crédit, fiscalité LMNP / nue, plus-value, TRI, score). Testé par `scripts/test-calculs.ts`.
 - `src/data/marche.json` : instantané DVF 2024-2025 Vendée + carte des loyers 2025, généré par `scripts/build-snapshot.py`.
-- `public/visuels/*.svg` : immeuble de nuit et vignettes, générés par `node scripts/gen-visuels.mjs`.
+- `public/photos/` : photos de l'accueil (Unsplash) en AVIF et WebP, avec leurs dimensions, aperçus et crédits dans `src/data/photos.json`.
+  Pour en changer : modifier `scripts/photos.json` sur la branche `sources-photos`, l'action GitHub y télécharge les originaux dans `sources/photos/` ;
+  puis, sur `main`, récupérer ce dossier et lancer `node scripts/optimiser-photos.mjs <dossier des originaux>`. Les crédits s'affichent dans les mentions légales.
 - `supabase/migrations/` : schéma v6 appliqué au projet Supabase `rentimo`.
 - `src/app/api/stripe/webhook` : activation automatique de l'offre Pro après paiement.
 - `src/lib/renovation.ts`, `src/app/renover` : analyse d'un bien à rénover (travaux DPE, prix maximum, lecture d'annonce).
