@@ -47,7 +47,7 @@ export function Pied() {
         <div className="pied-bas">
           <span>© {new Date().getFullYear()} Rentimo</span>
           <span>
-            Données : DVF (DGFiP), {MARCHE.periode} ; carte des loyers 2025. Résultats indicatifs, pas un conseil en investissement.
+            Données : DVF (DGFiP), {MARCHE.periode} ; carte des loyers 2025 ; DPE de l'ADEME. Résultats indicatifs, pas un conseil en investissement.
           </span>
         </div>
       </div>
