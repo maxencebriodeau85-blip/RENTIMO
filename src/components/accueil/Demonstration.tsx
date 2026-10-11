@@ -7,6 +7,7 @@ import { euros } from "@/lib/format";
 import { LigneNombre } from "@/components/ChampNombre";
 import { Sparkline } from "@/components/Courbe";
 import { Compteur } from "./Compteur";
+import { Photo } from "@/components/Photo";
 
 const PRESETS: Record<TypeLocal, { prix: number; loyer: number; charges: number; apport: number; surface: number }> = {
   Appartement: { prix: 105000, loyer: 520, charges: 1490, apport: 15000, surface: 42 },
@@ -22,7 +23,7 @@ const COURTS: Record<Regime, string> = {
 };
 const CADENCE = 2800;
 
-const image = (nom: string) => ({ ["--image" as string]: `url(/visuels/scene-${nom}.svg)` });
+const TAILLE_BANDE = "(max-width: 900px) 100vw, 1240px";
 
 export function Demonstration() {
   const [type, setType] = useState<TypeLocal>("Appartement");
@@ -86,7 +87,9 @@ export function Demonstration() {
           </p>
         </div>
         <div className="bande-scene">
-          <div className="scene-fond" style={image("buffet")} aria-hidden="true" />
+          <div className="scene-fond" style={{ ["--pos" as string]: "38% 60%" }} aria-hidden="true">
+            <Photo nom="salon" sizes={TAILLE_BANDE} />
+          </div>
           <div className="verre panneau panneau-sim">
             <div className="panneau-tete">
               <h3>Simulation</h3>
@@ -130,7 +133,9 @@ export function Demonstration() {
           </p>
         </div>
         <div className="bande-scene">
-          <div className="scene-fond" style={image("fauteuil")} aria-hidden="true" />
+          <div className="scene-fond" style={{ ["--pos" as string]: "30% 55%" }} aria-hidden="true">
+            <Photo nom="canape-lampe" sizes={TAILLE_BANDE} />
+          </div>
           <div className="verre panneau panneau-kpi">
             <div className="tuile">
               <div className="tuile-label">Rendement brut</div>
@@ -170,7 +175,9 @@ export function Demonstration() {
           </p>
         </div>
         <div className="bande-scene">
-          <div className="scene-fond" style={image("bureau")} aria-hidden="true" />
+          <div className="scene-fond" style={{ ["--pos" as string]: "28% 55%" }} aria-hidden="true">
+            <Photo nom="bureau" sizes={TAILLE_BANDE} />
+          </div>
           <div
             ref={panneauFisc}
             className={`verre panneau panneau-fisc${auto && visible ? " auto" : ""}`}

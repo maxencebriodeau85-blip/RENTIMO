@@ -50,7 +50,7 @@ export function Pied() {
         <div className="rt-footer__wordmark" aria-hidden="true">rentimo<span>.</span></div>
         <div className="rt-footer__bottom">
           <span>© {new Date().getFullYear()} Rentimo</span>
-          <p>Données : DVF (DGFiP), {MARCHE.periode} ; carte des loyers 2025.<br />Résultats indicatifs, pas un conseil en investissement.</p>
+          <p>Données : DVF (DGFiP), {MARCHE.periode} ; carte des loyers 2025 ; DPE de l’ADEME.<br />Résultats indicatifs, pas un conseil en investissement.</p>
           <a href="#contenu" className="rt-footer__top">Haut de page <span aria-hidden="true">↑</span></a>
         </div>
       </div>

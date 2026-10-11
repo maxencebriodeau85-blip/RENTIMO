@@ -6,7 +6,7 @@ import { useCompte } from "@/lib/useCompte";
 import { supabase } from "@/lib/supabase";
 import { OFFRE } from "@/lib/config";
 import { MARCHE } from "@/lib/marche";
-import { euros, m2, loyerM2, nombre, pct } from "@/lib/format";
+import { m2, loyerM2, nombre, pct } from "@/lib/format";
 import { RADAR_MIN_PASSOIRES, type LigneRadar, type ReponseRadar } from "@/lib/radar";
 import { COULEUR_CLASSE, DECOTE_PASSOIRE } from "@/lib/renovation";
 import { CONTOUR, NOIRMOUTIER, chemin, px, py } from "@/components/accueil/CarteVendee";

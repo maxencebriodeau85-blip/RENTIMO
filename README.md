@@ -1,6 +1,10 @@
-# Rentimo v5
+# Rentimo
 
 Simulateur de rentabilité locative (Next.js 14 + Supabase), déployé sur Vercel (projet `rentimo`).
+
+## Mise en ligne
+
+Le projet Vercel est relié à ce dépôt : chaque `git push` sur `main` part en production sur https://rentimo-seven.vercel.app, les autres branches donnent un aperçu.
 
 ## Lancer en local
 
@@ -14,9 +18,14 @@ npm test           # tests du moteur de calcul
 
 - `src/lib/calculs.ts` : moteur de calcul (rendements, crédit, fiscalité LMNP / nue, plus-value, TRI, score). Testé par `scripts/test-calculs.ts`.
 - `src/data/marche.json` : instantané DVF 2024-2025 Vendée + carte des loyers 2025, généré par `scripts/build-snapshot.py`.
-- `public/visuels/*.svg` : immeuble de nuit et vignettes, générés par `node scripts/gen-visuels.mjs`.
+- `public/images/` : visuels d’ambiance originaux de l’accueil cinématique, documentés dans `public/images/CREDITS.md`.
+- `public/photos/` : photos de l'accueil (Unsplash) en AVIF et WebP, avec leurs dimensions, aperçus et crédits dans `src/data/photos.json`.
+  Pour en changer : modifier `scripts/photos.json` sur la branche `sources-photos`, l'action GitHub y télécharge les originaux dans `sources/photos/` ;
+  puis, sur `main`, récupérer ce dossier et lancer `node scripts/optimiser-photos.mjs <dossier des originaux>`. Les crédits s'affichent dans les mentions légales.
 - `supabase/migrations/` : schéma v6 appliqué au projet Supabase `rentimo`.
 - `src/app/api/stripe/webhook` : activation automatique de l'offre Pro après paiement.
+- `src/lib/renovation.ts`, `src/app/renover` : analyse d'un bien à rénover (travaux DPE, prix maximum, lecture d'annonce).
+- `src/lib/radar.ts`, `src/app/api/radar`, `src/app/radar` : radar des passoires (DPE F et G de l'ADEME par code postal, liste complète réservée à l'offre Pro).
 
 ## Variables d'environnement (Vercel)
 
