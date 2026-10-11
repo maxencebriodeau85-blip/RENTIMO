@@ -262,6 +262,8 @@
   }
   .entete,
   .pied,
+  .rt-header,
+  .rt-footer,
   .pas-imprime,
   .sr-only {
     display: none !important;

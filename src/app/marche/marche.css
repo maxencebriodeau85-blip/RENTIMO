@@ -6,51 +6,66 @@
   font: inherit;
   cursor: pointer;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .tri:hover {
-  color: var(--texte);
+  color: var(--maree);
 }
 
 .marche-notes {
-  margin-top: 16px;
+  margin-top: 20px;
   max-width: 80ch;
 }
 
 .barometre {
-  margin-top: 64px;
-  padding: 28px;
+  margin-top: 72px;
+  padding: 36px;
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 32px;
+  gap: 40px;
+  background: #eeece5;
+  border-radius: 10px;
+  border-top: 3px solid var(--maree);
 }
 
 .commune-kpi {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
+}
+
+.commune-kpi .tuile {
+  padding: 24px;
+  background: #fff;
+  border-radius: 10px;
 }
 
 .commune-kpi .tuile-valeur {
-  font-size: 26px;
+  margin-top: 10px;
+  font-size: 30px;
+  letter-spacing: -0.04em;
 }
 
 .commune-grille {
-  margin-top: 28px;
+  margin-top: 32px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 
 .commune-grille .verre {
-  padding: 24px;
+  padding: 28px;
   display: grid;
-  gap: 12px;
+  gap: 18px;
   align-content: start;
+  background: #fff;
+  border-radius: 10px;
+  overflow-x: auto;
 }
 
 .commune-grille h2 {
-  font-size: 19px;
+  font-size: 21px;
   font-weight: 500;
 }
 
@@ -61,5 +76,25 @@
   }
   .commune-kpi {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .barometre,
+  .commune-grille .verre {
+    padding: 22px;
+  }
+  .commune-kpi {
+    gap: 10px;
+  }
+  .commune-kpi .tuile {
+    padding: 18px;
+  }
+  .commune-kpi .tuile-valeur {
+    font-size: 25px;
+  }
+  .barometre {
+    margin-top: 48px;
+    gap: 24px;
   }
 }

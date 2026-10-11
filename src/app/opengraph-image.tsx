@@ -1,59 +1,29 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Rentimo — Investissement locatif, en toute clarté";
+export const alt = "Rentimo — L’immobilier, à sa juste valeur.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Fenêtres allumées (1) ou éteintes (0) : 9 étages × 4 baies
-const FACADE = [
-  [0, 0, 1, 0], [1, 0, 0, 0], [0, 0, 1, 0], [0, 0, 1, 0], [1, 0, 0, 1],
-  [1, 0, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0], [1, 0, 1, 1],
-];
-
 export default function Image() {
   return new ImageResponse(
-    (
-      <div style={{ width: "100%", height: "100%", display: "flex", background: "linear-gradient(180deg, #070c14 0%, #0d1726 70%, #16243a 100%)", color: "#eceff3", padding: "64px 72px", position: "relative" }}>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", width: 700 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 30 }}>
-            <div style={{ width: 22, height: 32, border: "3px solid #eceff3", borderRadius: 3, display: "flex", alignItems: "center", justifyContent: "flex-end", padding: 3 }}>
-              <div style={{ width: 6, height: 6, background: "#f0b467" }} />
-            </div>
-            Rentimo
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div style={{ fontSize: 62, lineHeight: 1.06, letterSpacing: -2, display: "flex", flexDirection: "column" }}>
-              <span>Investissement locatif,</span>
-              <span>en toute clarté.</span>
-            </div>
-            <div style={{ fontSize: 28, color: "#a3adb9", lineHeight: 1.35 }}>
-              Rendement net-net, cash-flow, fiscalité et prix réels du secteur.
-            </div>
-          </div>
-          <div style={{ fontSize: 22, color: "#a3adb9", display: "flex", gap: 28 }}>
-            <span>27 219 ventes DVF en Vendée</span>
-            <span>Gratuit</span>
-          </div>
+    <div style={{ width: "100%", height: "100%", display: "flex", background: "#f5f3ee", color: "#213c32", position: "relative" }}>
+      <div style={{ padding: "55px 64px", width: 780, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", fontSize: 38, letterSpacing: -2, alignItems: "center", gap: 14 }}>
+          <svg width="32" height="36" viewBox="0 0 32 32" fill="none"><path d="M4 28V12l12-8 12 8v16H4ZM12 28V17h8v11M10 13h12M16 4v9" stroke="#213c32" strokeWidth="1.7" /></svg>
+          rentimo<span style={{ color: "#c46741" }}>.</span>
         </div>
-        <div style={{ position: "absolute", right: 90, top: 70, bottom: 0, width: 330, display: "flex", flexDirection: "column", background: "#172131", padding: "18px 16px 0", gap: 12 }}>
-          {FACADE.map((etage, i) => (
-            <div key={i} style={{ display: "flex", gap: 12, borderBottom: "5px solid #26324a", paddingBottom: 8 }}>
-              {etage.map((on, j) => (
-                <div
-                  key={j}
-                  style={
-                    on
-                      ? { width: 64, height: 40, backgroundColor: "#f3b36a", backgroundImage: "linear-gradient(135deg, #ffe2b0, #e59a4c)", boxShadow: "0 0 24px rgba(243,179,106,0.55)" }
-                      : { width: 64, height: 40, backgroundColor: "#121c2a" }
-                  }
-                />
-              ))}
-            </div>
-          ))}
+        <div style={{ display: "flex", flexDirection: "column", gap: 23 }}>
+          <div style={{ fontSize: 13, letterSpacing: 3, textTransform: "uppercase", color: "#a74c2d" }}>L’immobilier, en perspective</div>
+          <div style={{ display: "flex", flexDirection: "column", fontSize: 76, lineHeight: 1.03, letterSpacing: -4 }}><span>L’immobilier,</span><span>à sa juste valeur.</span></div>
+          <div style={{ fontSize: 23, color: "#646d61", lineHeight: 1.5, maxWidth: 570 }}>Un lieu vous inspire. Nos chiffres vous éclairent.</div>
         </div>
+        <div style={{ display: "flex", gap: 27, fontSize: 14, color: "#646d61", borderTop: "1px solid #d7dbd0", paddingTop: 21 }}><span>Simulation gratuite</span><span>Prix réels du marché</span><span>Né en Vendée</span></div>
       </div>
-    ),
-    size,
+      <div style={{ width: 420, background: "#213c32", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+        <svg width="360" height="420" viewBox="0 0 360 420" fill="none"><path d="M40 360V140L180 55L320 140V360H40ZM140 360V215H220V360M110 168H250M180 55V168M15 390H345M65 25V390M295 25V390" stroke="#e1dfcd" strokeWidth="2" /><path d="M140 215H220V260H140Z" fill="#c46741" /><path d="M65 390H295M20 200H340M180 5V410" stroke="#e1dfcd" strokeWidth="1" strokeDasharray="4 8" opacity=".3" /></svg>
+        <div style={{ position: "absolute", bottom: 40, left: 43, color: "#d7daca", fontSize: 11, letterSpacing: 2 }}>DES PROJETS D’AVENIR.</div>
+      </div>
+    </div>, size,
   );
 }

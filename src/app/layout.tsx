@@ -9,7 +9,7 @@ import { URL_SITE } from "@/lib/config";
 export const metadata: Metadata = {
   metadataBase: new URL(URL_SITE),
   title: {
-    default: "Rentimo — Rentabilité locative, en toute clarté",
+    default: "Rentimo — L’immobilier, à sa juste valeur",
     template: "%s · Rentimo",
   },
   description:
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a1019",
+  themeColor: "#f5f3ee",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

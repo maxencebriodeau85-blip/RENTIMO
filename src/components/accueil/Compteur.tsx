@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { euros, eurosSigne, nombre, pct } from "@/lib/format";
+import { useMouvement } from "./Experience";
 
 const FORMATS = {
   nombre: (v: number) => nombre(Math.round(v)),
@@ -20,6 +21,9 @@ const doux = (t: number) => 1 - Math.pow(1 - t, 3);
  * le mouvement réduit, la valeur s'affiche telle quelle.
  */
 export function Compteur({ valeur, format = "nombre", duree = 1200 }: { valeur: number | null; format?: FormatCompteur; duree?: number }) {
+  const { pause } = useMouvement();
+  const pauseRef = useRef(pause);
+  pauseRef.current = pause;
   const ref = useRef<HTMLSpanElement>(null);
   const cible = useRef(valeur);
   const affiche = useRef<number | null>(valeur);
@@ -30,6 +34,11 @@ export function Compteur({ valeur, format = "nombre", duree = 1200 }: { valeur: 
 
   const animer = (de: number, vers: number, ms: number) => {
     cancelAnimationFrame(raf.current);
+    if (pauseRef.current) {
+      affiche.current = vers;
+      rendre((n) => n + 1);
+      return;
+    }
     const t0 = performance.now();
     const pas = (t: number) => {
       const k = Math.min(1, (t - t0) / ms);
@@ -71,6 +80,12 @@ export function Compteur({ valeur, format = "nombre", duree = 1200 }: { valeur: 
   }, []);
 
   useEffect(() => {
+    if (pause) {
+      cancelAnimationFrame(raf.current);
+      affiche.current = valeur;
+      rendre((n) => n + 1);
+      return;
+    }
     if (valeur === null) {
       affiche.current = null;
       return;
@@ -79,7 +94,7 @@ export function Compteur({ valeur, format = "nombre", duree = 1200 }: { valeur: 
     const de = affiche.current ?? valeur;
     if (de !== valeur) animer(de, valeur, 450);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valeur]);
+  }, [valeur, pause]);
 
   const v = valeur === null ? null : affiche.current ?? valeur;
   return (

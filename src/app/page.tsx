@@ -1,252 +1,110 @@
+import Image from "next/image";
 import Link from "next/link";
 import "./accueil.css";
-import { Focus } from "@/components/accueil/Focus";
-import { Demonstration } from "@/components/accueil/Demonstration";
-import { CarteVendee } from "@/components/accueil/CarteVendee";
+import { Experience } from "@/components/accueil/Experience";
+import { HeroImmobilier } from "@/components/accueil/HeroImmobilier";
+import { ApercuSimulation } from "@/components/accueil/ApercuSimulation";
 import { Compteur } from "@/components/accueil/Compteur";
+import { Eclat } from "@/components/accueil/Eclat";
 import { MARCHE } from "@/lib/marche";
 import { exempleSecteur } from "@/lib/exemples";
-import { euros, eurosSigne, m2, nombre, pct } from "@/lib/format";
+import { m2, pct } from "@/lib/format";
 import { OFFRE } from "@/lib/config";
 
-const CARTES = [
-  { cp: "85100", nom: "Les Sables-d'Olonne", vignette: "cote" },
-  { cp: "85000", nom: "La Roche-sur-Yon", vignette: "ville" },
-  { cp: "85110", nom: "Chantonnay", vignette: "bourg" },
-] as const;
-
+const SECTEURS = [
+  { cp: "85100", nom: "Les Sables-d’Olonne", esprit: "L’appel du littoral", image: "/images/maison-littorale.webp", alt: "Maison de caractère dans un jardin côtier" },
+  { cp: "85000", nom: "La Roche-sur-Yon", esprit: "L’énergie de la ville", image: "/images/interieur-lumiere.webp", alt: "Intérieur lumineux avec de grandes fenêtres" },
+  { cp: "85110", nom: "Chantonnay", esprit: "Une autre qualité de vie", image: "/images/villa-atlantique.webp", alt: "Maison contemporaine ouverte sur la nature" },
+];
 const FAQ = [
-  {
-    q: "Rentimo est-il vraiment gratuit ?",
-    r: `Oui pour les particuliers : simulateur complet, comparaison des régimes, prix du secteur et ${OFFRE.gratuitSauvegardes} simulations sauvegardées. L'offre payante s'adresse aux professionnels qui veulent des rapports à leur nom.`,
-  },
-  {
-    q: "D'où viennent les prix et les loyers ?",
-    r: "Les prix au m² viennent des actes de vente publiés par l'État (base DVF, 2024 et 2025). Les loyers de marché viennent de la carte des loyers 2025 du ministère du Logement : loyers d'annonce, charges comprises.",
-  },
-  {
-    q: "Les calculs fiscaux sont-ils fiables ?",
-    r: "Ils appliquent les règles en vigueur pour les revenus 2025-2026 : abattements micro, amortissements LMNP, déficit foncier plafonné, plus-value avec abattements et réintégration des amortissements LMNP. Ce sont des estimations : pour décider, faites valider votre cas par un expert-comptable.",
-  },
-  {
-    q: "Rentimo aide-t-il à trouver un bien à rénover ?",
-    r: "Oui. L'analyse d'un bien à rénover estime les travaux pour gagner des classes DPE, la valeur une fois rénové, le déficit foncier et le prix d'achat à ne pas dépasser. Le radar des passoires, réservé à l'offre Pro, repère chaque jour les communes de Vendée où les DPE F et G se multiplient.",
-  },
-  {
-    q: "Quelles villes sont couvertes ?",
-    r: `Le simulateur fonctionne partout en France avec vos propres chiffres. Les prix du marché couvrent pour l'instant les ${MARCHE.codes_postaux.length} codes postaux de Vendée ; les départements voisins arrivent.`,
-  },
-  {
-    q: "Que deviennent mes simulations ?",
-    r: "Elles restent privées et sont hébergées en Europe (région de Paris). Elles ne sont visibles par personne d'autre, sauf si vous créez vous-même un lien de partage.",
-  },
+  { q: "Puis-je commencer sans créer de compte ?", r: `Oui. Le simulateur, la comparaison fiscale et les prix du marché sont accessibles gratuitement. Un compte gratuit permet ensuite de sauvegarder jusqu’à ${OFFRE.gratuitSauvegardes} simulations.` },
+  { q: "Sur quelles données reposent les estimations ?", r: "Sur les actes de vente DVF publiés par la DGFiP pour 2024 et 2025, et sur la carte des loyers 2025 du ministère du Logement. Les prix et loyers de référence sont actuellement disponibles en Vendée. Le simulateur fonctionne partout en France avec vos propres chiffres." },
+  { q: "Puis-je analyser un bien à rénover ?", r: "Oui. L’outil de rénovation estime les travaux, le gain de classes DPE, la valeur après rénovation et le prix d’achat à ne pas dépasser. Le radar Pro complète l’analyse avec les données DPE des communes de Vendée." },
+  { q: "Et si je suis professionnel de l’immobilier ?", r: `L’offre Pro permet des simulations illimitées, des rapports à votre nom et des études partageables avec vos acquéreurs. Elle est proposée à ${OFFRE.proMensuel} € par mois, avec ${OFFRE.essaiJours} jours d’essai sans carte bancaire.` },
 ];
 
 export default function Accueil() {
-  const exemples = CARTES.map((c) => ({ ...c, ex: exempleSecteur(c.cp) })).filter((c) => c.ex);
-  const sables = exemples.find((e) => e.cp === "85100")?.ex;
-
   return (
-    <div className="accueil" data-descente>
-      <Focus />
-
-      <section className="plongee" data-plongee>
-        <div className="plongee-cadre">
-          <div className="plongee-tour" data-tour aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/visuels/tour-nuit.svg" alt="" />
-          </div>
-          <div className="plongee-voile" aria-hidden="true" />
-          <div className="plongee-lueur" aria-hidden="true" />
-          <div className="plongee-interieur" aria-hidden="true" />
-          <div className="plongee-indice" aria-hidden="true" />
-        <div className="conteneur hero-int plongee-texte">
-          <h1 className="titre-xl">
-            Investissement locatif,
-            <br />
-            en toute clarté.
-          </h1>
-          <p className="chapo hero-chapo">
-            Rendement réel, cash-flow, fiscalité et prix du secteur : analysez un bien en deux minutes, à partir des
-            ventes réelles qui l'entourent.
-          </p>
-          <div className="hero-actions">
-            <Link href="/simulateur" className="btn btn-clair">
-              Lancer une simulation <span className="fleche" aria-hidden="true">→</span>
-            </Link>
-            <Link href="/pro" className="btn-texte">
-              Vous êtes agent ou courtier ?
-            </Link>
-          </div>
-          <ul className="hero-faits">
-            <li>
-              <strong className="chiffre">{nombre(MARCHE.total_ventes)}</strong> ventes réelles analysées en Vendée
-            </li>
-            <li>
-              <strong className="chiffre">{nombre(MARCHE.communes_loyers)}</strong> communes avec un loyer de marché
-            </li>
-            <li>
-              <strong>Gratuit</strong>, sans carte bancaire
-            </li>
-          </ul>
-        </div>
-        </div>
-      </section>
-
-      <div className="conteneur bandes">
-        <Demonstration />
-
-        <section className="bande" data-bande>
-          <div className="bande-texte">
-            <h2 className="titre-l">Comparez plusieurs biens</h2>
-            <p className="chapo">
-              Le même T2 de 42 m², acheté au prix médian et loué meublé au loyer de marché, ne rapporte pas la même chose
-              partout. Sur la côte, le prix monte bien plus vite que le loyer. Le score sur 100 résume rendement,
-              cash-flow, prix et TRI.
-            </p>
-          </div>
-          <div className="bande-scene scene-cartes">
-            <div className="scene-fond" style={{ ["--image" as string]: "url(/visuels/scene-baie.svg)" }} aria-hidden="true" />
-            <div className="cartes-biens">
-              {exemples.map(({ cp, nom, vignette, ex }, i) => (
-                <article key={cp} className="carte-bien" style={{ ["--i" as string]: i }}>
-                  <div className="carte-image" style={{ backgroundImage: `url(/visuels/vignette-${vignette}.svg)` }}>
-                    <span className="carte-score">
-                      <Compteur valeur={ex!.score.total} />
-                      <span className="discret">/100</span>
-                    </span>
-                  </div>
-                  <div className="carte-corps">
-                    <h3>{nom}</h3>
-                    <p className="petit">T2 · 42 m² · {euros(ex!.prix)}</p>
-                    <dl>
-                      <div>
-                        <dt>Rendement net</dt>
-                        <dd className="chiffre">{pct(ex!.r.rendement_net_pct)}</dd>
-                      </div>
-                      <div>
-                        <dt>Cash-flow</dt>
-                        <dd className={`chiffre ${ex!.r.cashflow_mensuel >= 0 ? "positif" : "negatif"}`}>{eurosSigne(ex!.r.cashflow_mensuel)}/mois</dd>
-                      </div>
-                      <div>
-                        <dt>Prix médian</dt>
-                        <dd className="chiffre">{m2(ex!.prixM2)}</dd>
-                      </div>
-                    </dl>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bande" data-bande>
-          <div className="bande-texte">
-            <h2 className="titre-l">Des chiffres qui viennent du terrain</h2>
-            <p className="chapo">
-              Chaque prix au m² vient des actes de vente enregistrés par l'État. Chaque loyer de marché, de la carte des
-              loyers du ministère du Logement. Vous savez tout de suite si un prix se négocie.
-            </p>
-            <Link href="/marche" className="btn btn-contour" style={{ marginTop: 24 }}>
-              Voir les prix par commune
-            </Link>
-          </div>
-          <div className="bande-scene scene-carte">
-            <div className="scene-fond" aria-hidden="true" />
-            <CarteVendee />
-            <div className="verre panneau panneau-donnees">
-              <div className="tuile-valeur positif">
-                <Compteur valeur={MARCHE.total_ventes} duree={1800} /> ventes réelles
-              </div>
-              <p className="petit" style={{ margin: "4px 0 0" }}>en Vendée, {MARCHE.periode} (DVF)</p>
-              <span className="badge" style={{ marginTop: 12 }}>
-                Données publiques de l'État
-              </span>
-            </div>
-          </div>
-        </section>
-
-        <section className="bande" data-bande>
-          <div className="bande-texte">
-            <h2 className="titre-l">Un rapport prêt pour votre banquier</h2>
-            <p className="chapo">
-              Hypothèses, plan de financement, fiscalité, projection sur vingt ans : imprimez le rapport ou envoyez un lien
-              en lecture seule. Votre interlocuteur voit exactement ce que vous voyez.
-            </p>
-          </div>
-          <div className="bande-scene scene-rapport">
-            <div className="scene-fond" style={{ ["--image" as string]: "url(/visuels/scene-table.svg)" }} aria-hidden="true" />
-            <div className="pile" aria-hidden="true">
-              <div className="feuille f3" />
-              <div className="feuille f2" />
-              <div className="feuille f1">
-                <div className="feuille-tete">
-                  <span>Rentimo</span>
-                  <span>Rapport de simulation</span>
-                </div>
-                <div className="feuille-titre">T2 meublé · Les Sables-d'Olonne</div>
-                <div className="feuille-kpi">
-                  <div><span>Rendement net</span><b>{pct(sables?.r.rendement_net_pct)}</b></div>
-                  <div><span>Cash-flow</span><b>{eurosSigne(sables?.r.cashflow_mensuel ?? 0)}</b></div>
-                  <div><span>TRI 20 ans</span><b>{pct(sables?.r.tri_pct)}</b></div>
-                </div>
-                <svg viewBox="0 0 200 60" className="feuille-courbe">
-                  <path className="trace" pathLength={1} d="M0,52 L20,50 L40,47 L60,43 L80,39 L100,34 L120,28 L140,22 L160,16 L180,10 L200,4" fill="none" stroke="#2f7d5f" strokeWidth="1.6" />
-                  <polyline points="0,40 20,41 40,42 60,43 80,44 100,44 120,45 140,45 160,46 180,46 200,46" fill="none" stroke="#b0b8c2" strokeWidth="1.2" strokeDasharray="4 3" />
-                </svg>
-                <div className="feuille-lignes">
-                  <i /><i /><i /><i style={{ width: "60%" }} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+    <Experience>
+      <HeroImmobilier />
+      <div className="signature-donnees conteneur">
+        <p>De l’intuition.<br /><strong>Et des fondations solides.</strong></p>
+        <div><strong><Compteur valeur={MARCHE.total_ventes} /></strong><span>ventes réelles analysées</span></div>
+        <div><strong><Compteur valeur={MARCHE.codes_postaux.length} /></strong><span>codes postaux en Vendée</span></div>
+        <div className="signature-source"><span className="source-monogramme" aria-hidden="true">RF</span><p>Données publiques<br /><strong>DVF · DGFiP · Loyers 2025</strong></p></div>
       </div>
 
-      <section className="conteneur pro-bandeau">
-        <div className="pro-texte">
-          <h2 className="titre-l">Agents, mandataires, courtiers : l'étude de rentabilité à votre nom.</h2>
-          <p className="chapo">
-            Vos acquéreurs investisseurs veulent des chiffres avant de visiter. Envoyez-leur en deux minutes une étude
-            complète, avec vos coordonnées et les prix réels du secteur.
-          </p>
-        </div>
-        <ul className="pro-liste">
-          <li>Rapport PDF à votre nom, sans logo Rentimo</li>
-          <li>Page de partage avec votre contact pour l'acquéreur</li>
-          <li>Prix DVF du secteur pour défendre un prix de vente</li>
-          <li>Radar des passoires : où les DPE F et G arrivent sur le marché</li>
-          <li>Simulations illimitées et sauvegardées</li>
-        </ul>
-        <div className="pro-action">
-          <p className="titre-m">
-            <span className="chiffre">{OFFRE.proMensuel} €</span> par mois
-          </p>
-          <p className="petit">Sans engagement. {OFFRE.essaiJours} jours d'essai gratuit, sans carte.</p>
-          <Link href="/pro" className="btn btn-clair">
-            Découvrir l'offre pro <span className="fleche" aria-hidden="true">→</span>
-          </Link>
+      <section className="approche-section conteneur" id="approche">
+        <div className="chapitre" data-reveal><span>01 / Une autre perspective</span><span>Voir au-delà des murs <span aria-hidden="true">↙</span></span></div>
+        <div className="approche-grille">
+          <div className="approche-photo" data-reveal>
+            <Image src="/images/interieur-lumiere.webp" alt="Salon contemporain baigné de lumière, bois clair et matières naturelles" fill sizes="(max-width: 760px) 100vw, 50vw" />
+            <div className="photo-cartouche"><span className="point-vivant mouvement-continu" /><span>L’espace d’un projet.<br /><strong>La lumière sur son potentiel.</strong></span><span aria-hidden="true">↗</span></div>
+            <span className="photo-index">RENTIMO — PERSPECTIVES N° 01</span>
+          </div>
+          <div className="approche-texte" data-reveal>
+            <span className="sur-titre">L’émotion rencontre la précision</span>
+            <h2>Le coup de cœur.<br /><em>Les chiffres en plus.</em></h2>
+            <p>Une adresse, une lumière, un volume. Tout commence par une envie. Rentimo vous aide à savoir si elle peut devenir un investissement qui a du sens.</p>
+            <div className="approche-points">
+              <div><span>01</span><div><h3>Un prix remis en perspective.</h3><p>Comparez votre bien aux ventes réelles de son secteur.</p></div></div>
+              <div><span>02</span><div><h3>Une rentabilité sans angle mort.</h3><p>Crédit, charges, fiscalité : regardez ce qu’il reste vraiment.</p></div></div>
+              <div><span>03</span><div><h3>Une décision qui vous ressemble.</h3><p>Ajustez vos hypothèses. Comparez. Avancez avec clarté.</p></div></div>
+            </div>
+            <Link className="lien-editorial" href="/methodologie">Découvrir notre méthode <span aria-hidden="true">↗</span></Link>
+          </div>
         </div>
       </section>
 
-      <section className="conteneur faq">
-        <h2 className="titre-l">Questions fréquentes</h2>
-        <div className="faq-liste">
-          {FAQ.map((f) => (
-            <details key={f.q}>
-              <summary>{f.q}</summary>
-              <p>{f.r}</p>
-            </details>
-          ))}
+      <div className="bande-mots" aria-hidden="true"><div className="mots-piste mouvement-continu">{[0, 1].map((n) => <span key={n}>Des lieux <i>à vivre.</i> <b><Eclat /></b> Des projets <i>à faire grandir.</i> <b><Eclat /></b> </span>)}</div></div>
+
+      <section className="projection-section" id="projection">
+        <div className="conteneur projection-grille">
+          <div className="projection-texte" data-reveal>
+            <span className="sur-titre">02 / Du possible au concret</span>
+            <h2>Et si on parlait<br /><em>de votre projet ?</em></h2>
+            <p>Quelques chiffres suffisent pour ouvrir le champ des possibles. Faites varier le prix et le loyer : votre première projection prend vie.</p>
+            <div className="projection-signature"><span className="empreinte mouvement-continu" aria-hidden="true"><Eclat /></span><div>Votre intuition, éclairée.<br /><strong>Votre investissement, maîtrisé.</strong></div></div>
+            <Link href="/simulateur" className="lien-editorial">Passer à l’étude complète <span aria-hidden="true">↗</span></Link>
+            <div className="projection-reperes"><span>4 régimes fiscaux comparés</span><span>Projection avec revente</span><span>Rapport partageable</span></div>
+          </div>
+          <div data-reveal><ApercuSimulation /></div>
         </div>
+        <svg className="plan-architecture" viewBox="0 0 700 500" fill="none" aria-hidden="true"><g stroke="currentColor" strokeWidth="1"><path d="M50 450V50H590V450ZM50 260H360V50M360 450V320H590M210 260V450M50 80H590M620 50V450M50 20H590" /><path className="plan-trace mouvement-continu" pathLength="1" d="M50 450V50H590V450H50M210 450V260H360V50" strokeWidth="2" /><path d="M400 320A80 80 0 0 1 480 240V320M210 300A65 65 0 0 1 275 365H210" /><circle cx="470" cy="170" r="48" /><path d="M410 110H530V230H410ZM80 310H160V410H80ZM80 120H270V190H80" /></g></svg>
       </section>
 
-      <section className="conteneur final">
-        <h2 className="titre-xl">Faites le calcul avant de faire une offre.</h2>
-        <Link href="/simulateur" className="btn btn-clair">
-          Lancer une simulation <span className="fleche" aria-hidden="true">→</span>
-        </Link>
+      <section className="territoires-section conteneur">
+        <div className="chapitre" data-reveal><span>03 / Chaque territoire a son potentiel</span><span>46°40′ N · 1°26′ O</span></div>
+        <div className="section-intro" data-reveal><h2>Une adresse.<br /><em>De nouvelles perspectives.</em></h2><div><p>Le même projet, une autre ville, une autre équation. Explorez les marchés de Vendée à partir de ventes réellement enregistrées.</p><Link href="/marche" className="lien-editorial">Explorer les communes <span aria-hidden="true">↗</span></Link></div></div>
+        <div className="territoires-cartes">
+          {SECTEURS.map((s, i) => {
+            const ex = exempleSecteur(s.cp);
+            if (!ex) return null;
+            return <Link className="territoire-carte" href={`/marche/${s.cp}`} key={s.cp} data-reveal>
+              <div className="territoire-photo"><Image src={s.image} alt={s.alt} fill sizes="(max-width: 680px) 100vw, 33vw" /><span className="territoire-numero">0{i + 1}</span><span className="territoire-fleche" aria-hidden="true">↗</span><span className="territoire-cp">VENDÉE / {s.cp}</span></div>
+              <div className="territoire-entete"><span>{s.esprit}</span><h3>{s.nom}</h3></div>
+              <div className="territoire-chiffres"><div><span>Prix médian de référence</span><strong>{m2(ex.prixM2)}</strong></div><div><span>Rendement brut simulé</span><strong>{pct(ex.r.rendement_brut_pct)}</strong></div></div>
+            </Link>;
+          })}
+        </div>
+        <p className="territoires-note">Visuels d’ambiance, sans lien avec des biens à vendre. Exemples : T2 de 42 m² au prix médian DVF, loyer de marché charges comprises. Rendements indicatifs.</p>
       </section>
-    </div>
+
+      <section className="renovation-editoriale">
+        <div className="renovation-ambiance"><Image src="/images/maison-littorale.webp" alt="Maison côtière de caractère aux volets verts et jardin naturel" fill sizes="100vw" /></div>
+        <div className="conteneur renovation-contenu" data-reveal><span className="sur-titre">Révéler ce qui ne se voit pas encore</span><h2>Les plus beaux projets<br />commencent parfois<br /><em>par un autre regard.</em></h2><p>Travaux, performance énergétique, valeur après rénovation : donnez une seconde lecture au potentiel d’un bien.</p><Link href="/renover" className="lien-plein lien-creme">Explorer le potentiel d’un bien <span aria-hidden="true">↗</span></Link></div>
+        <span className="renovation-caption">LE POTENTIEL EST DÉJÀ LÀ.</span>
+      </section>
+
+      <section className="pro-editorial conteneur">
+        <div className="pro-editorial-titre" data-reveal><span className="sur-titre">Rentimo pour les professionnels</span><h2>Votre expertise.<br /><em>Une longueur d’avance.</em></h2></div>
+        <div className="pro-editorial-detail" data-reveal><p>Donnez à vos acquéreurs plus qu’une visite. Une vision chiffrée, un rapport à votre nom et les bons arguments pour faire avancer leur projet.</p><div className="pro-editorial-prix"><strong>{OFFRE.proMensuel} €<small>/ mois</small></strong><span>{OFFRE.essaiJours} jours d’essai<br />Sans carte bancaire</span></div><Link href="/pro" className="lien-plein">Découvrir Rentimo Pro <span aria-hidden="true">↗</span></Link></div>
+      </section>
+
+      <section className="faq-editoriale conteneur">
+        <div data-reveal><span className="sur-titre">Tout simplement</span><h2>Les bonnes<br /><em>questions.</em></h2><Link href="/methodologie" className="lien-editorial">En savoir plus <span aria-hidden="true">↗</span></Link></div>
+        <div className="faq-editoriale-liste" data-reveal>{FAQ.map((f, i) => <details key={f.q}><summary><span className="faq-index">0{i + 1}</span><span>{f.q}</span><span className="faq-signe" aria-hidden="true">+</span></summary><p>{f.r}</p></details>)}</div>
+      </section>
+    </Experience>
   );
 }

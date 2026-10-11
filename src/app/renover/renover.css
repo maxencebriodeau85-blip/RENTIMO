@@ -1,4 +1,4 @@
-/* Analyse d'un bien à rénover. L'élément fort de la page : l'échelle DPE et le saut de classe. */
+/* Analyse d'un bien à rénover : des surfaces claires et une échelle DPE lisible. */
 
 .ren .champ textarea {
   min-height: 96px;
@@ -40,10 +40,10 @@
 }
 
 .ren-classe {
-  height: 38px;
+  height: 44px;
   border-radius: 8px;
   border: 1px solid var(--trait-fort);
-  background: rgba(10, 16, 25, 0.5);
+  background: #f5f3ee;
   color: var(--texte-2);
   font: inherit;
   font-weight: 600;
@@ -72,11 +72,12 @@
 .ren-classe[aria-pressed="true"] {
   background: var(--c);
   border-color: var(--c);
-  color: #0b1118;
+  color: #202820;
+  box-shadow: 0 3px 8px rgba(33, 60, 50, 0.08);
 }
 
 .ren-classe:disabled {
-  opacity: 0.25;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
@@ -103,6 +104,7 @@
 /* Verdict */
 .ren-verdict {
   border-top: 3px solid var(--trait-fort);
+  box-shadow: 0 12px 40px rgba(33, 60, 50, 0.04);
 }
 
 .ren-verdict.ton-bon {
@@ -126,14 +128,14 @@
 .ren-prixmax {
   display: grid;
   gap: 2px;
-  padding: 16px 18px;
+  padding: 22px;
   border-radius: var(--r-tuile);
   background: var(--lueur-douce);
-  border: 1px solid rgba(240, 180, 103, 0.3);
+  border: 1px solid rgba(196, 103, 65, 0.22);
 }
 
 .ren-prixmax b {
-  font-size: 34px;
+  font-size: 38px;
   font-weight: 400;
   letter-spacing: -0.02em;
   color: var(--lueur);
@@ -176,10 +178,10 @@
   width: calc(34% + var(--i) * 11%);
   padding-left: 12px;
   background: var(--c);
-  color: #0b1118;
+  color: #202820;
   clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
   border-radius: 4px 0 0 4px;
-  opacity: 0.22;
+  opacity: 0.32;
   transition: opacity 0.35s ease, filter 0.35s ease;
 }
 
@@ -198,7 +200,7 @@
 }
 
 .echelle-barres li.cible .echelle-barre {
-  filter: drop-shadow(0 0 10px var(--c));
+  filter: saturate(1.12);
 }
 
 .echelle-mot {
@@ -248,7 +250,7 @@
 }
 
 .echelle-legende {
-  margin-top: 16px;
+  margin-top: 20px;
   font-size: 15px;
   color: var(--texte-2);
 }
@@ -304,7 +306,7 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 16px;
-  padding: 10px 0;
+  padding: 13px 0;
   border-bottom: 1px solid var(--trait);
 }
 
@@ -331,7 +333,13 @@
     font-size: 12px;
   }
   .ren-prixmax b {
-    font-size: 28px;
+    font-size: 32px;
+  }
+  .ren-prixmax {
+    padding: 18px;
+  }
+  .ren-classes {
+    gap: 4px;
   }
   .ren-liste div {
     flex-direction: column;
@@ -340,7 +348,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .echelle-saut {
+  .echelle-saut,
+  .echelle-barre,
+  .ren-classe {
     transition: none;
   }
 }

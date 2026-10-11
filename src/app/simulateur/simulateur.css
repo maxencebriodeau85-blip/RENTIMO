@@ -1,40 +1,48 @@
 .sim-entete {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   display: grid;
   gap: 12px;
 }
 
 .sim-grille {
   display: grid;
-  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
-  gap: 28px;
+  grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+  gap: 30px;
   align-items: start;
 }
 
 .sim-form {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .sim-bloc {
-  padding: 20px 22px 22px;
-  border-radius: 18px;
+  padding: 24px;
+  border-radius: 10px;
   margin: 0;
   min-width: 0;
+  background: #fff;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 fieldset.sim-bloc {
-  border: 1px solid var(--trait-fort);
+  border: 1px solid var(--trait);
+}
+
+fieldset.sim-bloc:focus-within {
+  border-color: rgba(33, 60, 50, 0.35);
+  box-shadow: 0 8px 28px rgba(33, 60, 50, 0.04);
 }
 
 .sim-bloc legend,
 .sim-avance summary {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   padding: 0;
   float: left;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 14px;
+  color: var(--texte);
 }
 
 .sim-avance summary {
@@ -85,21 +93,27 @@ fieldset.sim-bloc {
 
 .sim-resultats {
   position: sticky;
-  top: 80px;
+  top: 100px;
   display: grid;
-  gap: 16px;
-  max-height: calc(100vh - 96px);
+  gap: 20px;
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-right: 6px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(236, 239, 243, 0.18) transparent;
+  scrollbar-color: rgba(33, 60, 50, 0.2) transparent;
+  scroll-margin-top: 100px;
 }
 
 .sim-synthese {
-  padding: 22px;
+  padding: 28px;
   display: grid;
-  gap: 18px;
+  gap: 22px;
+  background: #fff;
+  border-top: 3px solid var(--maree);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(33, 60, 50, 0.04);
+  animation: sim-apparition 0.65s ease both;
 }
 
 .sim-score {
@@ -112,6 +126,11 @@ fieldset.sim-bloc {
   position: relative;
   width: 84px;
   height: 84px;
+  flex: 0 0 84px;
+}
+
+.sim-anneau circle:first-child {
+  stroke: rgba(33, 60, 50, 0.1);
 }
 
 .sim-anneau span {
@@ -119,7 +138,8 @@ fieldset.sim-bloc {
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 500;
 }
 
 .sim-kpi {
@@ -129,7 +149,8 @@ fieldset.sim-bloc {
 }
 
 .sim-kpi .tuile-valeur {
-  font-size: 24px;
+  font-size: clamp(21px, 2.1vw, 28px);
+  letter-spacing: -0.035em;
 }
 
 .sim-constats {
@@ -165,9 +186,9 @@ fieldset.sim-bloc {
 }
 
 .sim-h2 {
-  font-size: 17px;
-  font-weight: 500;
-  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 18px;
 }
 
 .sim-bloc-tete {
@@ -184,7 +205,7 @@ fieldset.sim-bloc {
 }
 
 .ligne-active td {
-  background: rgba(240, 180, 103, 0.06);
+  background: rgba(196, 103, 65, 0.07);
 }
 
 .sim-legende {
@@ -243,7 +264,8 @@ fieldset.sim-bloc {
 .sim-plan div {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  gap: 16px;
+  padding: 11px 0;
   border-bottom: 1px solid var(--trait);
   font-size: 14px;
 }
@@ -275,7 +297,7 @@ fieldset.sim-bloc {
   position: relative;
   height: 8px;
   border-radius: 99px;
-  background: rgba(236, 239, 243, 0.08);
+  background: rgba(33, 60, 50, 0.08);
 }
 
 .jauge-zone {
@@ -283,7 +305,7 @@ fieldset.sim-bloc {
   top: 0;
   bottom: 0;
   border-radius: 99px;
-  background: rgba(76, 195, 148, 0.28);
+  background: rgba(33, 60, 50, 0.22);
 }
 
 .jauge-med {
@@ -302,7 +324,7 @@ fieldset.sim-bloc {
   height: 16px;
   border-radius: 3px;
   background: var(--lueur);
-  box-shadow: 0 0 14px rgba(240, 180, 103, 0.7);
+  box-shadow: 0 0 0 4px rgba(196, 103, 65, 0.14);
   transform: translate(-50%, -50%);
 }
 
@@ -329,7 +351,7 @@ fieldset.sim-bloc {
 }
 
 .jl-zone {
-  background: rgba(76, 195, 148, 0.4);
+  background: rgba(33, 60, 50, 0.28);
 }
 
 .jl-med {
@@ -349,6 +371,17 @@ fieldset.sim-bloc {
   display: none;
 }
 
+@keyframes sim-apparition {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 980px) {
   .sim-grille {
     grid-template-columns: 1fr;
@@ -364,7 +397,7 @@ fieldset.sim-bloc {
     position: fixed;
     left: 12px;
     right: 12px;
-    bottom: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
     z-index: 40;
   }
   .sim-barre a {
@@ -372,9 +405,10 @@ fieldset.sim-bloc {
     justify-content: space-between;
     gap: 10px;
     padding: 12px 16px;
-    border-radius: 14px;
-    background: var(--verre-fort);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.96);
     border: 1px solid var(--trait-fort);
+    box-shadow: 0 6px 28px rgba(33, 60, 50, 0.12);
     backdrop-filter: blur(14px);
     text-decoration: none;
     font-size: 13px;
@@ -398,9 +432,29 @@ fieldset.sim-bloc {
     grid-template-columns: 1fr;
   }
   .sim-bloc {
-    padding: 16px;
+    padding: 20px;
+  }
+  .sim-synthese {
+    padding: 20px;
+  }
+  .sim-kpi .tuile-valeur {
+    font-size: 25px;
   }
   .ligne-champ label {
     font-size: 13px;
+  }
+  .sim-barre a {
+    gap: 8px;
+    padding: 12px;
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-synthese {
+    animation: none;
+  }
+  .sim-bloc {
+    transition: none;
   }
 }

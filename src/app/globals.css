@@ -1,27 +1,30 @@
-/* RENTIMO — nuit atlantique. Une seule source de lumière chaude : les fenêtres. */
+/* RENTIMO — matière, lumière et précision. */
 :root {
-  --nuit: #0a1019;
-  --nuit-2: #0f1722;
-  --nuit-3: #151f2c;
-  --verre: rgba(17, 25, 36, 0.72);
-  --verre-fort: rgba(13, 20, 30, 0.9);
-  --trait: rgba(236, 239, 243, 0.08);
-  --trait-fort: rgba(236, 239, 243, 0.16);
-  --texte: #eceff3;
-  --texte-2: #a3adb9;
-  --texte-3: #6e7987;
-  --lueur: #f0b467;
-  --lueur-douce: rgba(240, 180, 103, 0.14);
-  --maree: #4cc394;
-  --alerte: #ec8a77;
-  --blanc: #f6f7f9;
-  --r-panneau: 20px;
-  --r-tuile: 12px;
-  --r-champ: 10px;
-  --largeur: 1240px;
-  --gouttiere: clamp(16px, 4vw, 40px);
+  --nuit: #f5f3ee;
+  --nuit-2: #eeece5;
+  --nuit-3: #e7e7de;
+  --verre: #fffefa;
+  --verre-fort: #ffffff;
+  --trait: rgba(32, 40, 32, 0.10);
+  --trait-fort: rgba(32, 40, 32, 0.20);
+  --texte: #202820;
+  --texte-2: #646d61;
+  --texte-3: #737b6c;
+  --lueur: #a74c2d;
+  --lueur-douce: #f3e8de;
+  --maree: #2f604b;
+  --alerte: #af4932;
+  --blanc: #fffefa;
+  --sapin: #213c32;
+  --terre: #c46741;
+  --r-panneau: 12px;
+  --r-tuile: 8px;
+  --r-champ: 6px;
+  --largeur: 1440px;
+  --gouttiere: clamp(22px, 4.5vw, 72px);
   --police: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  color-scheme: dark;
+  --police-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  color-scheme: light;
 }
 
 *,
@@ -40,7 +43,7 @@ body {
   background: var(--nuit);
   color: var(--texte);
   font-family: var(--police);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.6;
   font-feature-settings: "ss01", "cv11";
   -webkit-font-smoothing: antialiased;
@@ -92,6 +95,21 @@ textarea {
   white-space: nowrap;
 }
 
+.sr-only:focus-visible {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: auto;
+  height: auto;
+  clip: auto;
+  padding: 12px 18px;
+  background: var(--blanc);
+  color: var(--sapin);
+  z-index: 200;
+}
+
+::selection { background: #d9e2d4; color: #213c32; }
+
 /* ---------- Typographie ---------- */
 h1,
 h2,
@@ -111,6 +129,7 @@ h4 {
 }
 
 .titre-l {
+  font-family: var(--police-display);
   font-size: clamp(32px, 3.6vw, 48px);
   font-weight: 300;
   letter-spacing: -0.03em;
@@ -169,7 +188,7 @@ h4 {
   gap: 10px;
   min-height: 46px;
   padding: 0 22px;
-  border-radius: 999px;
+  border-radius: 5px;
   border: 1px solid transparent;
   font-size: 15px;
   font-weight: 500;
@@ -184,12 +203,13 @@ h4 {
 }
 
 .btn-clair {
-  background: var(--blanc);
-  color: #0b1018;
+  background: var(--sapin);
+  color: var(--blanc);
 }
 
 .btn-clair:hover {
-  background: #fff;
+  background: #304e40;
+  transform: translateY(-2px);
 }
 
 .btn-clair .fleche {
@@ -207,7 +227,8 @@ h4 {
 }
 
 .btn-contour:hover {
-  border-color: rgba(236, 239, 243, 0.4);
+  border-color: var(--sapin);
+  background: #e9ece3;
 }
 
 .btn-texte {
@@ -234,153 +255,16 @@ h4 {
   cursor: not-allowed;
 }
 
-/* ---------- En-tête ---------- */
-.entete {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: linear-gradient(to bottom, rgba(10, 16, 25, 0.92), rgba(10, 16, 25, 0.72));
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--trait);
-}
-
-.entete-int {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  gap: 16px;
-}
-
-.logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-}
-
-.logo svg {
-  width: 22px;
-  height: 22px;
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  font-size: 15px;
-}
-
-.nav a {
-  text-decoration: none;
-  color: var(--texte-2);
-}
-
-.nav a:hover,
-.nav a[aria-current="page"] {
-  color: var(--texte);
-}
-
-.nav .btn {
-  min-height: 38px;
-  padding: 0 16px;
-  font-size: 14px;
-}
-
-.menu-mobile {
-  display: none;
-}
-
-@media (max-width: 1060px) {
-  .nav {
-    gap: 20px;
-  }
-}
-
-@media (max-width: 860px) {
-  .nav .lien-secondaire {
-    display: none;
-  }
-  .nav {
-    gap: 16px;
-  }
-}
-
-@media (max-width: 560px) {
-  .nav .lien-tertiaire {
-    display: none;
-  }
-}
-
-/* ---------- Pied de page ---------- */
-.pied {
-  border-top: 1px solid var(--trait);
-  margin-top: 120px;
-  padding: 48px 0 56px;
-  font-size: 14px;
-  color: var(--texte-3);
-}
-
-.pied-grille {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 32px;
-}
-
-.pied h4 {
-  font-size: 14px;
-  color: var(--texte-2);
-  margin-bottom: 12px;
-  font-weight: 500;
-  letter-spacing: 0;
-}
-
-.pied ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 8px;
-}
-
-.pied a {
-  text-decoration: none;
-}
-
-.pied a:hover {
-  color: var(--texte);
-}
-
-.pied-bas {
-  margin-top: 40px;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 760px) {
-  .pied-grille {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 /* ---------- Verre (panneaux) ---------- */
 .verre {
   background: var(--verre);
   border: 1px solid var(--trait-fort);
   border-radius: var(--r-panneau);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 12px 36px -24px rgba(32, 40, 32, 0.2);
 }
 
 .tuile {
-  background: rgba(10, 16, 25, 0.55);
+  background: var(--blanc);
   border: 1px solid var(--trait);
   border-radius: var(--r-tuile);
   padding: 16px 18px;
@@ -417,7 +301,7 @@ h4 {
   padding: 4px;
   border-radius: 999px;
   border: 1px solid var(--trait);
-  background: rgba(10, 16, 25, 0.4);
+  background: var(--nuit-2);
   flex-wrap: wrap;
 }
 
@@ -433,9 +317,9 @@ h4 {
 
 .pilule[aria-pressed="true"],
 .pilule[aria-selected="true"] {
-  border-color: rgba(236, 239, 243, 0.55);
-  color: var(--texte);
-  background: rgba(236, 239, 243, 0.05);
+  border-color: var(--sapin);
+  color: var(--blanc);
+  background: var(--sapin);
 }
 
 /* ---------- Champs ---------- */
@@ -499,7 +383,7 @@ h4 {
 .champ select,
 .champ textarea {
   width: 100%;
-  background: rgba(10, 16, 25, 0.6);
+  background: var(--blanc);
   border: 1px solid var(--trait-fort);
   border-radius: var(--r-champ);
   padding: 11px 14px;
@@ -543,6 +427,8 @@ h4 {
 /* ---------- Pages internes ---------- */
 .page {
   padding-top: 64px;
+  padding-bottom: 48px;
+  animation: page-entree .65s ease-out both;
 }
 
 .page-titre {
@@ -589,7 +475,7 @@ h4 {
 }
 
 .tableau tbody tr:hover td {
-  background: rgba(236, 239, 243, 0.02);
+  background: rgba(33, 60, 50, 0.035);
 }
 
 .defile-x {
@@ -608,8 +494,13 @@ h4 {
 }
 
 .badge.lueur {
-  border-color: rgba(240, 180, 103, 0.45);
+  border-color: rgba(167, 76, 45, 0.35);
   color: var(--lueur);
+}
+
+@keyframes page-entree {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

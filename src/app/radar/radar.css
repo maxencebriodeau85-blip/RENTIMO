@@ -10,6 +10,10 @@
   gap: 40px;
   align-items: center;
   margin-bottom: 48px;
+  padding: 32px;
+  background: #eeece5;
+  border: 1px solid var(--trait);
+  border-radius: 10px;
 }
 
 .radar-phrase {
@@ -29,6 +33,20 @@
 .radar-carte {
   width: 100%;
   height: auto;
+}
+
+.radar-carte > path,
+.radar-carte > ellipse {
+  fill: rgba(33, 60, 50, 0.04);
+  stroke: rgba(33, 60, 50, 0.35);
+}
+
+.radar-carte > circle {
+  fill: rgba(33, 60, 50, 0.25);
+}
+
+.radar-point circle:last-of-type {
+  fill: #213c32;
 }
 
 .radar-point circle:first-child {
@@ -83,7 +101,8 @@
 
 .radar-commune {
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--maree);
 }
 
 .radar-commune:hover {
@@ -103,7 +122,7 @@
   width: calc(var(--w) * 0.8);
   max-width: calc(100% - 24px);
   border-radius: 4px;
-  background: linear-gradient(to left, rgba(235, 130, 53, 0.32), rgba(215, 34, 31, 0.08));
+  background: linear-gradient(to left, rgba(196, 103, 65, 0.2), rgba(196, 103, 65, 0.04));
   pointer-events: none;
 }
 
@@ -136,11 +155,11 @@
 .radar-fantome i {
   height: 12px;
   border-radius: 6px;
-  background: rgba(236, 239, 243, 0.14);
+  background: rgba(33, 60, 50, 0.14);
 }
 
 .radar-fantome i:nth-child(2) {
-  background: rgba(235, 130, 53, 0.35);
+  background: rgba(196, 103, 65, 0.25);
 }
 
 .radar-offre {
@@ -149,10 +168,13 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: min(480px, calc(100% - 16px));
-  padding: 26px;
+  padding: 30px;
   display: grid;
   gap: 12px;
   justify-items: start;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 10px;
+  box-shadow: 0 14px 44px rgba(33, 60, 50, 0.1);
 }
 
 .radar-offre .petit,
@@ -175,8 +197,8 @@
 }
 
 .radar-notes dt {
-  font-weight: 500;
-  margin-bottom: 4px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .radar-notes dd {
@@ -192,8 +214,9 @@
 
 .radar-squelette {
   height: 220px;
-  border-radius: var(--r-panneau);
-  background: linear-gradient(100deg, rgba(236, 239, 243, 0.03) 30%, rgba(236, 239, 243, 0.08) 50%, rgba(236, 239, 243, 0.03) 70%);
+  border-radius: 10px;
+  border: 1px solid var(--trait);
+  background: linear-gradient(100deg, rgba(33, 60, 50, 0.03) 30%, rgba(33, 60, 50, 0.08) 50%, rgba(33, 60, 50, 0.03) 70%);
   background-size: 300% 100%;
   animation: radar-attente 1.6s linear infinite;
 }
@@ -208,10 +231,12 @@
 }
 
 .radar-erreur {
-  padding: 24px;
+  padding: 32px;
   display: grid;
   gap: 14px;
   justify-items: start;
+  background: #fff;
+  border-left: 3px solid var(--lueur);
 }
 
 .radar-erreur p {
@@ -225,6 +250,21 @@
   }
   .radar-notes dl {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .radar-synthese,
+  .radar-offre,
+  .radar-erreur {
+    padding: 22px;
+  }
+  .radar-verrou {
+    min-height: 380px;
+  }
+  .radar-offre .btn {
+    white-space: normal;
+    text-align: center;
   }
 }
 

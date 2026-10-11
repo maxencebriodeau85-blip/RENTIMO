@@ -45,7 +45,7 @@ export function GraphiqueProjection({ series, etiquettes, format }: { series: Se
     <svg viewBox={`0 0 ${L} ${H}`} width="100%" role="img" aria-label={series.map((s) => s.nom).join(", ")} style={{ display: "block" }}>
       {graduations.map((g) => (
         <g key={g}>
-          <line x1={mg.g} x2={L - mg.d} y1={y(g)} y2={y(g)} stroke={g === 0 ? "rgba(236,239,243,.28)" : "rgba(236,239,243,.07)"} />
+          <line x1={mg.g} x2={L - mg.d} y1={y(g)} y2={y(g)} stroke={g === 0 ? "rgba(32,40,32,.28)" : "rgba(32,40,32,.10)"} />
           <text x={mg.g - 10} y={y(g) + 4} textAnchor="end" fontSize="12" fill="var(--texte-3)" style={{ fontVariantNumeric: "tabular-nums" }}>
             {format(g)}
           </text>
